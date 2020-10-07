@@ -39,6 +39,18 @@ docker system prune -->will remove -all stopped containers
                                    -all dangling images
                                    -all dangling build cache
 
+==>run jenkins in docker container:-
+  docker run options:
+  expose port 8080       --- by default runs on that port
+  expose port 50000      --- master and slave communication
+  run in detached mode   --- run container in background
+  bind named volume      --- persist data of jenkins
+  
+  :docker run -p 8080:8080 -p 50000:50000 -d -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+
+
+
+
 ----------------KUBERNETES---------------
 
 ==>what is kubernetes ?
