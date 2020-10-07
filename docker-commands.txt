@@ -1,0 +1,46 @@
+==>what is docker ?
+
+  - docker is a tool designed to make it easier to create, deploy, and run applications by using  containers.
+  - Containers allow a developer to package up an application with all of the parts it needs, 
+    such as libraries and other dependencies, and ship it all out as one package.
+  - docker cli,rest api, docker daemon(server).
+  - docker cli is a command line tool that allows you to interact with docker daemon(server) through rest api.
+  - so whatever docker cli command run it will first contact with rest api and rest api will cordinate with docker daemon.
+  - ultimately task will perform by docker daemon.
+
+==>docker commands :-
+
+docker version
+docker images
+docker images -a
+docker images --help
+docker ps
+docker ps -a
+docker ps --help
+docker pull <docker-image>
+docker build .
+docker run -p 3005:4000 <docker-image>
+docker ps
+docker exec -it <container-id> /bin/sh
+docker tag <docker-image> <give dockerid/tagname>
+docker push sumanojas/nodejs-app
+docker images -a
+docker ps -a
+docker stop <container-id>
+docker rm <container-id>
+docker rm -f <container-id>
+docker rm $(docker ps -a -q)
+docker rm -f $(docker ps -a -q)
+docker rmi $(docker images -a -q)
+docker system df
+docker system --help
+docker system prune -->will remove -all stopped containers
+                                   -all n/w not used by atleast one container
+                                   -all dangling images
+                                   -all dangling build cache
+
+----------------KUBERNETES---------------
+
+==>what is kubernetes ?
+
+  - 
