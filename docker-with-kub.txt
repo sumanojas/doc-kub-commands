@@ -1,0 +1,174 @@
+==>what is web application ?
+  - "a web(based) application is any program that is accessed over a network connection using HTTP,
+    rather than existing within a device's memory."
+    1. build your app -on suitable environment
+    2. pack it for shipping - wrap or packet with necessary support and instructions to ship or deliver it to the intendant client.
+    3. host or run the app - finally run it on your machine or hosted on your server.
+==> web application using ubuntu?
+  - wget https://nginx.org/keys/nginx_signing.key
+  - cd /etc/apt
+  - ls
+  - nano sources.list
+    deb https://nginx.org/packages/mainline/ubuntu/ xenial nginx
+    deb-src https://nginx.org/packages/mainline/ubuntu/ xenial nginx
+    save
+  - apt-get remove nginx-common
+  - apt-get update
+  - apt-get install nginx
+  - localhost:80 
+==> containers ?
+  - containers are an abstraction at the application layer that packages codes and dependencies together.
+  - benefits:
+    -consume less storage and memory
+    -easier and faster to ship
+    -if they work on one machine; they work on all machines
+    -cost efficient and easy to scale.
+    -possible to eliminate data loss and downtime.
+
+==> docker ?
+  - docker is an open platform for developers and system admins to build, ship and run containerized applications.
+  - benefits:
+    - most widely used containerization platform.
+    - huge community support.
+    - large amount of 3Rd party application support.
+    - works on windows and mac too.
+==>containerizing simple web application
+ docker image pull nginx:latest
+ docker container run -itd --name web-server-nginx -p 8080:80 nginx:latest
+
+==> stages of containerization ?
+  .dockerfile(build) -- docker image(ship) -- containers(Run)	
+
+==> docker file ?
+  .A sequential set of instruction for docker engine.
+  .primary way of interacting with docker and migrating to containers.
+  .order of sequence is important.
+  .each instruction creates a layer
+  .layers can be cached and reused by Docker.
+   
+==> Miscellaneous instructions of Dockefile?
+  
+  .creating parent and child dockerfiles
+
+    $ vi parent-Dockerfile
+     FROM ubuntu:16.04
+     ONBUILD RUN echo "Greetings from your parent image!" > /tmp/greetings.txt
+     CMD ["bash"]
+
+    $ vi child-Dockerfile
+     FROM papa-ubuntu:latest
+     CMD ["bash"]
+    
+    $ docker build -f parent-Dockerfile -t papa-ubuntu .
+    $ docker build -f child-Dockerfile -t baby-ubuntu .
+    $ docker images
+    $ docker run -itd --name baby-container baby-ubuntu
+    $ docker exec -it baby-container bash
+    #ls
+    #cd /tmp
+    #ls
+    #cat greetings.txt
+
+   1. understand and implement docker healthcheck using dockerfile.
+   2. understand and implement docker stopsignal using dockerfile.
+   3. containerize a simple flask application.
+
+vi app.py
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def CMC():
+    return 'Welcome to the container master class by cerulean canvas'
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+
+    Flask=web-server gateway interface framework
+
+vi requirements.txt
+Flask==0.12.2
+
+vi Dockerfile
+FROM ubuntu:16.04
+
+RUN apt-get update -y && \
+    apt-get install -y python-pip python-dev curl
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+HEALTHCHECK --interval=10s --timeout=30s CMD curl --fail http://localhost:5000/ || exit 1
+CMD ["python", "app.py"]
+STOPSIGNAL SIGKILL
+
+
+==> understanding docker images
+	.a stack of multiple layers created from Dockerfile instructions
+	.each layer apart from the top one is R/O
+	.the top layer is R/W type
+	.recognized by name or image ID
+	.they are pushed to and can be pulled from Docker hub.
+
+==>DOCKER IMAGE:--
+
+		   |------> CMD layer
+		   |
+		   |------> EXPOSE layer
+		   |
+	    layers |------> WORKDIR layer
+docker image-------|
+		   |------> RUN layer
+		   |
+		   |------> Base Image layer
+		   |
+		   |------> bootfs
+
+ -Intermediate Image:
+  -created from individual dockerfile instructions
+  -all of them are Read-only
+  -each one of them have separate image id
+  -useful for caching and debugging
+  -stacked by AUFS(union file system) to create final Docker Image
+
+==>Working with Docker Images|Search,List,Push,Pull and Tag
+  
+        -docker search python:3.6
+	-docker search registry
+	-docker search --filter "is-official=true" registry
+	-docker search --filter "table {{.Name}}\t{{.Description}}\t{{.IsOfficial}}" registry
+	-docker images ls
+	-docker images list
+	-docker images <image-name>
+	-docker images --no-trunc ubuntu:16.04
+	-docker image pull nginx:latest
+	-docker image pull nginx:apline  -(it's like minimal image)
+	-docker tag <tagname> <repository/imagename:tag>
+	-docker image push <imagename>
+	
+==>know your Docker image|Inspect and history
+
+   Inspect:-inspect coomand returns information about every single docker object who has contributed in the creation of a particular docker image, which can be useful at the time of debugging.
+
+	-docker image inspect ubuntu:latest
+	-docker image inspect --format "{{.RepoTags}} : {{.RepoDigests}} " ubuntu:latest
+	-docker image inspect --format "{{json .Config}}" ubuntu > inspect_report_ubuntu.txt
+	-docker image history ubuntu
+	-docker image history img_apache
+==>Cleanup docker images
+
+	-docker image rm nginx:1-alpine-perl
+	-docker rmi <image-id> --force
+
+==>A container is born!
+
+   -running instance of a docker image
+   -provides similar isolation like VMs ut lighter... A LOT LIGHTER
+   -adds writable layer on top of image layers and works on it
+   -with correct network configurations container can also talk to each other via ip address or DNS.
+   -it also follows copy on write policy to maintain the integrity of the docker image
+   
+  =>what do you mean by run?
+   -it means providing resources like compute memory and storage.
+     run = cpu + memory + storage
+
+
+
+ 
