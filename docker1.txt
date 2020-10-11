@@ -1,0 +1,491 @@
+==>what is web application ?
+  - "a web(based) application is any program that is accessed over a network connection using HTTP,
+    rather than existing within a device's memory."
+    1. build your app -on suitable environment
+    2. pack it for shipping - wrap or packet with necessary support and instructions to ship or deliver it to the intendant client.
+    3. host or run the app - finally run it on your machine or hosted on your server.
+==> web application using ubuntu?
+  - wget https://nginx.org/keys/nginx_signing.key
+  - cd /etc/apt
+  - ls
+  - nano sources.list
+    deb https://nginx.org/packages/mainline/ubuntu/ xenial nginx
+    deb-src https://nginx.org/packages/mainline/ubuntu/ xenial nginx
+    save
+  - apt-get remove nginx-common
+  - apt-get update
+  - apt-get install nginx
+  - localhost:80 
+==> containers ?
+  - containers are an abstraction at the application layer that packages codes and dependencies together.
+  - benefits:
+    -consume less storage and memory
+    -easier and faster to ship
+    -if they work on one machine; they work on all machines
+    -cost efficient and easy to scale.
+    -possible to eliminate data loss and downtime.
+
+==> docker ?
+  - docker is an open platform for developers and system admins to build, ship and run containerized applications.
+  - benefits:
+    - most widely used containerization platform.
+    - huge community support.
+    - large amount of 3Rd party application support.
+    - works on windows and mac too.
+==>containerizing simple web application
+ docker image pull nginx:latest
+ docker container run -itd --name web-server-nginx -p 8080:80 nginx:latest
+
+==> stages of containerization ?
+  .dockerfile(build) -- docker image(ship) -- containers(Run)	
+
+==> docker file ?
+  .A sequential set of instruction for docker engine.
+  .primary way of interacting with docker and migrating to containers.
+  .order of sequence is important.
+  .each instruction creates a layer
+  .layers can be cached and reused by Docker.
+   
+==> Miscellaneous instructions of Dockefile?
+  
+  .creating parent and child dockerfiles
+
+    $ vi parent-Dockerfile
+     FROM ubuntu:16.04
+     ONBUILD RUN echo "Greetings from your parent image!" > /tmp/greetings.txt
+     CMD ["bash"]
+
+    $ vi child-Dockerfile
+     FROM papa-ubuntu:latest
+     CMD ["bash"]
+    
+    $ docker build -f parent-Dockerfile -t papa-ubuntu .
+    $ docker build -f child-Dockerfile -t baby-ubuntu .
+    $ docker images
+    $ docker run -itd --name baby-container baby-ubuntu
+    $ docker exec -it baby-container bash
+    #ls
+    #cd /tmp
+    #ls
+    #cat greetings.txt
+
+   1. understand and implement docker healthcheck using dockerfile.
+   2. understand and implement docker stopsignal using dockerfile.
+   3. containerize a simple flask application.
+
+vi app.py
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def CMC():
+    return 'Welcome to the container master class by cerulean canvas'
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+
+    Flask=web-server gateway interface framework
+
+vi requirements.txt
+Flask==0.12.2
+
+vi Dockerfile
+FROM ubuntu:16.04
+
+RUN apt-get update -y && \
+    apt-get install -y python-pip python-dev curl
+COPY . /app
+WORKDIR /app
+RUN pip install -r requirements.txt
+HEALTHCHECK --interval=10s --timeout=30s CMD curl --fail http://localhost:5000/ || exit 1
+CMD ["python", "app.py"]
+STOPSIGNAL SIGKILL
+
+
+==> understanding docker images
+	.a stack of multiple layers created from Dockerfile instructions
+	.each layer apart from the top one is R/O
+	.the top layer is R/W type
+	.recognized by name or image ID
+	.they are pushed to and can be pulled from Docker hub.
+
+==>DOCKER IMAGE:--
+
+		   |------> CMD layer
+		   |
+		   |------> EXPOSE layer
+		   |
+	    layers |------> WORKDIR layer
+docker image-------|
+		   |------> RUN layer
+		   |
+		   |------> Base Image layer
+		   |
+		   |------> bootfs
+
+ -Intermediate Image:
+  -created from individual dockerfile instructions
+  -all of them are Read-only
+  -each one of them have separate image id
+  -useful for caching and debugging
+  -stacked by AUFS(union file system) to create final Docker Image
+
+==>Working with Docker Images|Search,List,Push,Pull and Tag
+  
+        -docker search python:3.6
+	-docker search registry
+	-docker search --filter "is-official=true" registry
+	-docker search --filter "table {{.Name}}\t{{.Description}}\t{{.IsOfficial}}" registry
+	-docker images ls
+	-docker images list
+	-docker images <image-name>
+	-docker images --no-trunc ubuntu:16.04
+	-docker image pull nginx:latest
+	-docker image pull nginx:apline  -(it's like minimal image)
+	-docker tag <tagname> <repository/imagename:tag>
+	-docker image push <imagename>
+	
+==>know your Docker image|Inspect and history
+
+   Inspect:-inspect coomand returns information about every single docker object who has contributed in the creation of a particular docker image, 
+            which can be useful at the time of debugging.
+
+	-docker image inspect ubuntu:latest
+	-docker image inspect --format "{{.RepoTags}} : {{.RepoDigests}} " ubuntu:latest
+	-docker image inspect --format "{{json .Config}}" ubuntu > inspect_report_ubuntu.txt
+	-docker image history ubuntu
+	-docker image history img_apache
+==>Cleanup docker images
+
+	-docker image rm nginx:1-alpine-perl
+	-docker rmi <image-id> --force
+
+==>A container is born!
+
+   -running instance of a docker image
+   -provides similar isolation like VMs ut lighter... A LOT LIGHTER
+   -adds writable layer on top of image layers and works on it
+   -with correct network configurations container can also talk to each other via ip address or DNS.
+   -it also follows copy on write policy to maintain the integrity of the docker image
+   
+  =>what do you mean by run?
+   -it means providing resources like compute memory and storage.
+     run = cpu + memory + storage
+
+
+
+26==> container run VS create
+
+	-docker container create -it --name cc-busybox-A busybox:latest
+	-docker container run -itd --rm --name cc-busybox-B busybox:latest
+
+27==> working with container ?
+
+	-docker container start cc-busybox-A
+	-docker container restart --time 5 cc-busy-A  -buffer of 5 seconds
+	-docker container rename cc-busybox-A my-busybox
+28=> working with container ?
+ 
+	-docker container attach my-busybox
+	alternative command
+	-docker container start my-busybox
+	-docker exec -it my-busybox pwd
+29==> Inspect and commit containers ?
+
+    -Inspect
+	-docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' my-ubuntu
+    -commit
+	-docker exec -it my-ubuntu bash
+	-docker container commit my-ubuntu sumanojas/updated-ubuntu:1.0
+30==> container exposue | container port-mapping
+	
+	-docker container run -itd --name <container-name> -p 8080:80/tcp <docker-image>
+	-docker container run -itd --name <container-name> -P <docker-image>     -here we use capital P so it map ports by itself
+	-docker container port <container-name> -we can view informaion of port by using this command
+	
+31==> container clean-up | Prune and remove
+
+	-docker container rm <container-name>
+	-docker container rm <container-id> <container-id>
+	-docker container rm <container-name> --force
+	-docker container kill --signal=SIGTERM <container-name> if we want to be kind use this
+	-docker container prune --it will simply kill all of the dangling containers and free up whatever resources is it can.
+
+32==> multi-container applications and introduction to networking in docker.
+    
+    -in docker containers the communications between contianers are managed by ojaects called network drivers.
+    -docker network driver is a piece off software which handles container networking.they can be created simply using DOCKER Network command.
+     No images or files are required.
+    -Speaking off networks these networks can spawn from single host instances to multi-host clusters.
+    -Native N/W drivers are shipped with Docker Engine.
+    -Remote n/w drivers are created and managed by 3rd party vendors or community.
+    -IP Address Manangement Drivers provide default subnets if not specified by admin.
+
+33==> Container Networking Model(CNM) of Docker ?
+34==> Docker's Native Network Drivers
+35=> Created Docker Networks
+
+	-docker network create --driver bridge my-bridge
+	-docker network create --driver bridge --subnet=192.168.0.0/16 --ip-range=192.168.5.0/24 my-bridge1
+	-docker network ls
+	-docker network --filter driver=bridge
+
+36==> working with docker networks | connect, disconnect, inspect & clean
+
+	-docker network connect my-bridge-1 my-ubuntu
+	-docker container inspect my-ubuntu
+	-docker container run -itd --network host --name cont_nginx nginx:latest
+	-docker container port cont_nginx
+	-docker contianer inspect cont_nginx
+
+	-docker network inspect bridge (it's default network)
+	-docker network inspect my-bridge-1
+
+	-docker network inspect --format "{{.Scope}}" bridge
+	-docker network inspect --format "{{.ID}}: {{.Name}}" bridge
+
+	-docker network disconnect my-bridge-1 my-ubuntu
+	-docker network inspect my-bridge-1
+	-docker network inspect my-ubuntu
+
+37==> ping one container from another
+
+	-docker network ls
+	-docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 net-bridge
+	-docker network ls
+	-docker run -itd --net=net-bridge --name=cont_database redis
+	-docker inspect --format'{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' cont_database
+	-docker run -itd --net=net-bridge --name=serve-A busybox
+	-docker inspect --format='{{json .Contianers}}' net-bridge | python -m json.tool
+	-docker run -itd --name=server-B busybox
+	-docker container inspect --format='{{json .NetworkSettinggs.Networks}}' server-B | python -m json.tool
+38==> Never lose a "bit" of your data!
+
+    - containers data needs to be backed up somewhere as a permanent storage.
+
+   =>what should we back-up?
+    - we have two types of layers
+      -read only layers which holds permanent data and is never modified due to on copy on right policy.
+      -and read write layers which holds temporary or volatile data, if a container stops or dies the volatile data vanishes.
+      -so we need to backup the important data from the volatile read write layer of the container.
+
+   =>where to back-up?
+    - you can store anywhere.
+    - you can store in some machine which hosts docker
+    - you can store in another server
+    - you can store it on a cloud
+
+    ==>	volume
+   -most commonly used storage object type is called a docker volume in a volume the container storage is completely isolated fromm the host file system
+    although the data off volume is sorted in a specific directory off the host they controlled and managed by docker command line.
+   -volumes are more secure to ship and more reliable to operate.
+   -volumes are storage objects off docker which are mounted to containers interms off implementation volumes are dedicated directories on hosts file system
+   -if containerized app is shipped along with the volume people apart from the developer himself using the app will end up creating such a directory on their own docker hosts, 
+    container provides data to docker engine and user provides commands to store the data in the volume or to manage the data in the same.
+   -although what container knows, its's just name off the volume, not the path of the host.the translation takes place on docker machines, 
+    and so external applications having access to containers will have no means to access volumes directly.
+   -this isolation meaintains the integrity and security off hosts and containers.
+    
+    ==> bind mounts
+
+			     data
+		container ------>----
+				    |
+				    |
+				    ~         data
+       				  Docker  ------------> hosts
+				    ~
+				    |
+				    |
+		user  --------->-----
+			command
+
+
+
+   - the exchange of information is pretty similar,apart from the fact that instead of creating a directory inspired by the name of volume
+     bind ounts allow us to use any directory on docker host to store the data.
+   - while this might be convenient in some cases,it also exposes the storage location off the containers,
+     which can make dense n the overall security off the application or the host itself.
+   - apart from that other users,apart from developer himself,may not have such path on their host and creating so may not be under their privileges or comfort.
+    
+
+
+    ==>tmpfs
+ 
+                                         tmpfs
+                                         ----- 
+
+                               command            
+     			user -----------> docker ------------> container
+
+ 
+   - finally,we have tmpfs or temporary file systems volumes and bind mount let you share the files between host machine and containers 
+     so that you can persist the data even after the container is stopped.
+   - if you're running docker on linux, you have third option i.e., tmpfs mounts, when you create a container with tmpfs mount, 
+     the container can create files outside the containers writeable layer as opposed to volumes and bind mounts.
+   - A tmpfs mount is temporary and only persists in the host memory not in storage when the container stops,
+     the tmpfs mount is removed and the files written there won't be persisted.
+   - the only sensible use case, which comes to my mind for tmpfs is to store sensitive files,
+     which you don't want to persist once the application gets deleted.
+   - something like the browsing history,which gets deleted if we use the incognito tab.
+   - tmpfs mounts have their limitations they can be created or shiped and they won't work on non linux environments like docker on windows.
+
+39==> working with volumes | create,list and remove
+
+    - docker volume create vol-busybox
+    - docker run -d --volume vol-ubuntu:/tmp ubuntu
+    - docker volume ls --filter "dangling=true" (it means it lists volumes which are not being mounted to any conainers
+    - docker volume inspect vol-ubuntu
+    - docker volume rm vol-ubuntu
+
+40==> when containers meet volumes
+
+    - $ docker run -itd --name cont-ubuntu --volume vol-ubuntu:/var/log ubuntu:latest
+    - $ docker container inspect --format "{{json .Mounts}}" cont-ubuntu | python -m json.tool
+    - $ docker exec -it cont-ubuntu bash
+      /# apt-get update
+      /# cd /var/log
+      /# ls
+      /# exit
+      $ docker stop cont-ubuntu
+      $ sudo su -
+      # cd/var/lib/docker/volumes
+      # ls
+      # cd vol-ubuntu
+      # ls
+      # cd _data
+      # ls
+
+41==> working with bind mounts
+
+    - $ mkdir bind-data
+    - $ docker run -itd \
+      > --name bind-ubuntu \
+      > --mount type=bind,source="/home/dhwani/bind-data",target=/tmp \
+      > ubuntu:latest
+    - $ docker ps -a
+    - $ docker container inspect bind-ubuntu
+    - $ docker exec -it bind-ubuntu bash
+    - /# ls
+    - /# touch /tmp/foo.txt
+    - /# ls /tmp
+    - /# exit
+
+42==> hosting containerized 2048 game!
+
+    - $ git clone https://github.com/cerulean-canvas/2048.git
+    - $ cd 2048
+    - $ ls 
+    - $ docker run -itd --name 2048 \
+      > --mount type=bind,source="$(PWD)"/,target=/usr/share/nginx/html \
+      > -p 8080:80 \
+      > nginx:latest
+   - check locally using :localhost:8080
+
+43==> Introduction to docker compose
+
+  => Docker compose ?
+   - compose is a tool for defining and running complex applications with docker 
+   - In case off working simply with docker engine,we need multiple docker files for multiple parts or containers off a full fledged appliation.
+   - for example,we may have to create separate files for frontend,backend and other containerized blocks,which can be daunting to manage.
+   - with compose you can define a multi container application in a single file,then spin up your application in a single command,
+     which does everything that needs to be done to get the APP running.
+   - you can define and integrate multiple docker objects such as contianers,networks,services etc., 
+     in a single file as blocks and compose will translate them to docker engine for you.
+
+	       __________________
+               | frontend block |
+   	       | backend block  |
+	       | volume block   |
+	       | other block    |
+               |________________| 
+               
+		compose file
+44==> installing docker compose on linux
+
+    - $ sudo curl -L https://github.com/docker/compose/release/download/1.22.0//docker-copose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    - $ sudo chmod +x /usr/local/bin/docker-compose
+    - $ docker-compose --version
+    
+45==> Structure of Docker Compose file ?
+
+    - the compose file or docker compose file is a Yaml file,which defines multiple objects like services, networks and volumes. 
+      it is important to know that the dafault part for the composed file is always the present directory.
+
+      YAML = YAML Ain't Markup Language
+      Datatypes:
+      1). Scalars(Strings and Numbers)
+      2). Sequence(Arrays and Lists)
+      3). Mappings(Hashes and Dictionary)
+    
+    - $ cat docker-compose.yaml
+
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_database
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: word@press
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: abc@123
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest  
+    container_name: wd_frontend
+    volumes:
+      - wordpress_files:/var/www/html
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: abc@123
+volumes:
+    wordpress_files:
+    db_data:
+
+46==> wordpress on compose
+
+    - $ docker-compose up -d
+    - $ docker ps -a
+    - http://localhost:8000
+    - $ docker exec -it mysql_database bash
+    - /# cd /var/lib/mysql
+    - /# ls
+    - $ docker run -it --link mysql_database:mysql --rm mysql sh -C 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+    - > show databases;
+    - > use wordpress;
+    - > show tables;
+
+47==> introduction to docker compose CLI
+    - $ docker-compose config 
+    - $ docker-compose config --services
+    - $ docker-compose images
+    - $ docker-compose logs
+    - $ docker-compose logs --tail=10
+    - $ docker-compose ps
+    - $ docker-compose top
+    - $ docker-compose down -you can consider this as clean up command or contrary command to docker compose up
+                            -whn we hit enter it stops both of the services removes the containers and removed additional resources like networks.
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
