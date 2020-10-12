@@ -301,9 +301,9 @@ docker image-------|
 
 
    - the exchange of information is pretty similar,apart from the fact that instead of creating a directory inspired by the name of volume
-     bind ounts allow us to use any directory on docker host to store the data.
+     bind mounts allow us to use any directory on docker host to store the data.
    - while this might be convenient in some cases,it also exposes the storage location off the containers,
-     which can make dense n the overall security off the application or the host itself.
+     which can make dense in the overall security off the application or the host itself.
    - apart from that other users,apart from developer himself,may not have such path on their host and creating so may not be under their privileges or comfort.
     
 
