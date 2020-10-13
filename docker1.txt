@@ -369,6 +369,17 @@ docker image-------|
     - /# ls /tmp
     - /# exit
 
+DOCKER VOLUME TYPES:-
+ 1. docker run -v /home/mount/data:/var/lib/mysql/data      -this type of volume definition is called Host Volumes.
+                   (host directory) (container directory)
+ 2.docker run -v /var/lib/mysql/data	-here directory is automatically created my docker under /var/lib/docker/volumes so for each
+                                         container there will be a folder generated that gets mounted automatically to the container 
+					 and this type of volumes are called anonymous volumes because you don't have a reference 
+					 to this automatically generated folder basically just have to know the path.
+ 3.docker run -v name:/var/lib/mysql/data -named volume					 
+		   
+
+
 42==> hosting containerized 2048 game!
 
     - $ git clone https://github.com/cerulean-canvas/2048.git
