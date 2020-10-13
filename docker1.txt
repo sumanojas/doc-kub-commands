@@ -283,6 +283,12 @@ docker image-------|
    -although what container knows, its's just name off the volume, not the path of the host.the translation takes place on docker machines, 
     and so external applications having access to containers will have no means to access volumes directly.
    -this isolation meaintains the integrity and security off hosts and containers.
+   
+ =>VOLUMES    : Volumes are stored in a part of the host filesystem which is managed by Docker (/var/lib/docker/volumes/ on Linux). 
+                Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.
+ =>BIND MOUNTS: Bind mounts may be stored anywhere on the host system. They may even be important system files or directories. 
+                Non-Docker processes on the Docker host or a Docker container can modify them at any time.
+ =>TMPFS      : tmpfs mounts are stored in the host system’s memory only, and are never written to the host system’s filesystem.
     
     ==> bind mounts
 
