@@ -247,7 +247,7 @@ docker image-------|
 	-docker network inspect my-ubuntu
 
 37==> ping one container from another
-
+         		[docker exec -ti web1 ping web2]
 	-docker network ls
 	-docker network create --driver bridge --subnet 172.20.0.0/16 --ip-range 172.20.240.0/20 net-bridge
 	-docker network ls
