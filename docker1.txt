@@ -195,7 +195,7 @@ docker image-------|
     -commit
 	-docker exec -it my-ubuntu bash
 	-docker container commit my-ubuntu sumanojas/updated-ubuntu:1.0
-30==> container exposue | container port-mapping
+30==> container expose | container port-mapping
 	
 	-docker container run -itd --name <container-name> -p 8080:80/tcp <docker-image>
 	-docker container run -itd --name <container-name> -P <docker-image>     -here we use capital P so it map ports by itself
@@ -211,7 +211,7 @@ docker image-------|
 
 32==> multi-container applications and introduction to networking in docker.
     
-    -in docker containers the communications between contianers are managed by ojaects called network drivers.
+    -in docker containers the communications between containers are managed by ojects called network drivers.
     -docker network driver is a piece off software which handles container networking.they can be created simply using DOCKER Network command.
      No images or files are required.
     -Speaking off networks these networks can spawn from single host instances to multi-host clusters.
@@ -221,7 +221,7 @@ docker image-------|
 
 33==> Container Networking Model(CNM) of Docker ?
 34==> Docker's Native Network Drivers
-35=> Created Docker Networks
+35==> Created Docker Networks
 
 	-docker network create --driver bridge my-bridge
 	-docker network create --driver bridge --subnet=192.168.0.0/16 --ip-range=192.168.5.0/24 my-bridge1
