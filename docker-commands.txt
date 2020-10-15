@@ -50,9 +50,3 @@ docker system prune -->will remove -all stopped containers
 
 
 
-
-----------------KUBERNETES---------------
-
-==>what is kubernetes ?
-
-  - 
