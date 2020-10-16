@@ -218,6 +218,15 @@ docker image-------|
     -Native N/W drivers are shipped with Docker Engine.
     -Remote n/w drivers are created and managed by 3rd party vendors or community.
     -IP Address Manangement Drivers provide default subnets if not specified by admin.
+=>Docker networking ?
+  Docker offers a mature networking model. There are three common Docker network types - bridge networks, 
+  used within a single host, overlay networks, for multi-host communication, and macvlan networks 
+  which are used to connect Docker containers directly to host network interfaces.
+  
+=>Can Docker containers communicate with each other?
+As mentioned earlier, docker containers are attached to bridge or docker0 network by default if no other network is mentioned.
+Take a note that all containers within the same bridge network can communicate with each other via IP addresses.
+
 
 33==> Container Networking Model(CNM) of Docker ?
 34==> Docker's Native Network Drivers
