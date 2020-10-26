@@ -223,6 +223,20 @@ docker image-------|
   used within a single host, overlay networks, for multi-host communication, and macvlan networks 
   which are used to connect Docker containers directly to host network interfaces.
   
+=>Network drivers in docker
+Docker provides different network drivers:
+
+Bridge 🏛 : The default network driver. Bridge networks are usually used when your applications run in standalone containers that need to communicate on the same host.
+
+Host ⚙️ : Removes network isolation between the container and the Docker host, and uses the host’s networking directly.
+
+Overlay ⛓ : Connects multiple Docker daemons together to create a flat virtual network across hosts where you can establish communication between a swarm service and a standalone container, or between two standalone containers on different Docker daemons. This strategy removes the need to do OS-level routing between these containers.
+
+Macvlan 🔩 : Macvlan networks allow you to assign a MAC address to a container, making it appear as a physical device on your network.
+
+None ❌ : Disables all networking.
+  
+  
 =>Can Docker containers communicate with each other?
 As mentioned earlier, docker containers are attached to bridge or docker0 network by default if no other network is mentioned.
 Take a note that all containers within the same bridge network can communicate with each other via IP addresses.
