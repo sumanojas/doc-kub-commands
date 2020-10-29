@@ -17,6 +17,7 @@
   - apt-get install nginx
   - localhost:80 
 ==> containers ?
+  - container is a standared unit of software that stores up code and all its dependencies so the application runs fast reliably from one computing environment to different         ones. 
   - containers are an abstraction at the application layer that packages codes and dependencies together.
   - benefits:
     -consume less storage and memory
