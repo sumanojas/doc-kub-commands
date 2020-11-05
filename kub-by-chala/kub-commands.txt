@@ -1,0 +1,156 @@
+
+Monolithic :--
+
+ “Monolithic application has single code base with multiple modules. 
+  Modules are divided as either for business features or technical features. 
+  It has single build system which build entire application and/or dependency. 
+  It also has single executable or deployable binary”   – Technical Definition 
+
+=>Difficulties with monolithic application, when it grow 
+
+ -Large monolithic code base makes complicated to understand, especially for new developer
+ -Scaling become challenging
+ -Continuously integration / deployment become complex and time consuming. You may require dedicated team for build and deploy
+ -Overloaded IDE, Large code base makes IDE slow, build time increase.
+ -Extremely difficult to change technology or language or framework because everything is tightly coupled and depend up on each other.
+
+Microservice :--
+
+ -Microservice architecture is an approach of building large enterprise application with multiple small unit called service,each service develop,deploy and test individually. 
+  Each service intercommunicate with a common communication protocol like REST web service with JSON.
+  Each service run individually either in single machine or different machine but they execute its own separate process. 
+  Each service may have own database or storage system or they can share common database or storage system. 
+  Microservice is all about distribute or break application in small chunks.
+
+=>Privilege with Microservice architecture, when it grow 
+ -Each microservice is small and focused on a specific feature / business requirement.
+ -Microservice can be developed independently by small team of developers (normally 2 to 5 developers).
+ -Microservice is loosely coupled, means services are independent, in terms of development and deployment both.
+ -Microservice can be developed using different programming language (Personally I don't suggest to do it).
+ -Microservice allows easy and flexible way to integrate automatic deployment with Continuous Integration tools (for e.g: Jenkins, Hudson, bamboo etc..).
+  The productivity of a new team member will be quick enough.
+ -Microservice allows you to take advantage of emerging and latest technologies (framework, programming language, programming practice, etc.).
+ -Microservice is easy to scale based on demand. In a nutshell, monolithic vs microservice architecture is like elephant vs ant approach.
+  What you wants to build a giant system like elephant or army of ant, small, fast and effective.
+
+Containers :--
+
+=>what are containers ?
+ -In simple terms containers will package all your application code and its dependencies and ship it to a public or private repository 
+  and then download and run it anywhere. your application will behave same wherever you run it. 
+
+=>container architecture :--
+ - containers virtualize at the OS level
+ Benefits:
+ - very light weight
+ - Boots up in seconds
+ - takes fraction of disk and memory space
+
+Docker :--
+
+ - Docker is an open source containerization platform. 
+   Docker enables developers to package applications into containers—standardized executable components that combine application source code with all the operating system (OS)
+   libraries and dependencies required to run the code in any environment.
+
+Container Orchestration engine :--
+
+ - it is a tool to automate deploying scaling and managing containerized apps at a large scale in a dynamic environment.
+ - Features :- clustering, scheduling, scalability, load balancing, fault tolerance, deployment.
+
+Kubernetes :--
+ 
+=>what is kubernetes ?
+
+ - kubernetes is the open source container orchestration engine to manage containers in large-scale.
+ - kubernetes will provide all the features you need to run docker or rocket based container applications including cluster management scheduling, 
+   service discovery monitoring secrets management and more
+ - So kubernetes is born and designed at Google and later on Google donated kubernetes to cloud native
+   foundation(CNCF) since then kubernetes is gone by CNCF and maintained by CNCF 
+
+=>kubernetes architecture ?
+ 
+=>MASTER:--
+  -master is responsible for managing whole cluster it monitors the health check of the nodes.
+  -it shows the information about the members of the cluster and its configuration inside it.
+  -so when worker node fails it moves a workload from fail node to another healthy worker node.
+  -kubernetes master is responsible for scheduling provisioning controlling and exposing API's to the clients.
+Components of Master:--
+ =>API server:-
+ -api server is kind of a gatekeeper for entire cluster if you want to create delete update or even display in kubernetes object it has to go through that API.
+ -API server validates and configures the API objects such as pods,services,replication controllers & deployments and it is responsible for exposing various API's.
+ -it exposes api for almost every operation so how do we interact with this API using a tool called kubectl
+ -it is also called with various names such as kube control and kubecuddle it is a very tiny go language binary 
+ -it basically talks to the API server to perform any operations that we issue from command line.
+
+ =>Scheduler:-
+ -it is resposible for physically scheduling pods across multiple nodes so depending upon the constraints that you mentioned in configuration file
+  scheduler schedules these pods accordingly.
+ -for example if you mentioned CPU has one core,memory is 10gig the disk type is SSd and other affinity are other constraints that you may want to declare in the 
+  artifacts so once we pass this artifact to the API server the scheduler will look for the appropriate nodes that meets this criteria & will schedule the pods accordingly.
+
+ =>Control manager:-
+ -there are four controllers behind the control manger. they are
+  * node controller
+  * replication controller
+  * endpoint controller 
+  * service account & token controller
+ -so at a high level these controllers are responsible for overall health of entire cluster it ensures that nodes are up and running all the times 
+  correct number of pods are running as mentioned in the spec file.
+
+ =>ETCD :-
+ -etcd is distributed key-value lightweight database it is developed by core OS it is a very popular distributed key-value database 
+ -etcd in kubernetes is going to be the central database to store current cluster state at any point of time 
+
+=>NODE:--
+ -worker node can be any virtual machine or a physical server where containers are deployed every node in the kubernetes cluster must run container runtime such as docker or rocket 
+ -there are two other kuberntes components also required for us to communicate with master and they are kubelet and kubeproxy.
+Components of Node:--
+ =>kubelet:-
+ -kubelet is a primary node agent that runs on each worker node inside the cluster so the primary objective of this kubelet is if looks at the port spec that was submitted to the API server
+  on the kubernetes master and ensures that containers described in that pod spec are running & healthy 
+ -incase if the kubelet notices any issues with the pods running on the worker nodes that it tries to restart the pod on the same node so incase if the issue is with 
+  a worker node itself then in that case kunernetes master detects an node failure then it tries to decides to recreate the pod on another health node so its all depends 
+  on if the pod is controlled by a replica set or a replication controller if none of them are behind this pod then pod dies and would not be recreated on anywhere 
+ -so it is advised to use pod with a deployment or a replica set.
+
+ =>kube-proxy:--
+ -kubeproxy is a critical element inside the kube-proxy cluster it is responsible for maintaining entire network configuration it essentially maintains the distributed n/w 
+  across all the nodes,across all the pods and across all containers and it also exposes services to the outside world 
+ -it essentially the core networking component inside the communities.
+
+ =>Pods:--
+ - pod is basically a scheduling unit in kubernetes just like VM in VM ware world so each pod consists of one or more containers in most cases there will be one container. 
+   there are scenarios where you need to run two or more containers together inside a pod in that case one container can be helping the another container so the primary advantage of 
+   pod is we can deploy multiple dependent containers together so it acts as a wrapper aroung these containers and we interact and manage these containers primarily through pods.
+
+ =>Containers:--
+ - Container are runtime environment for applications,you run containerized application processes inside the containers 
+   these containers resides inside the pod also remember that containers are designed to run microservices it is not ideal for running monolithic applications.
+
+=>Kubectl in kubernetes:--
+.it is command line utility for running commands against kubernetes clusters.
+.kubectl or kube control or kube commandline tool.
+
+kubectl: syntax
+ - kubectl [command] [type] [name] [flags]
+ ex:
+ - kubectl get pod nginx-pod -w
+ 
+=>Installing kubernetes using kubeadm:--
+=>kubeadm:-
+ -kubeadm is a command-line utility which will help you to boostrap your kubernetes cluster
+
+kubeadm commands:-
+
+.kubeadm init //on master ->whenever you want to configure any node as master node
+ -kubeadm init [flags]
+.kubeadm join //on worker ->whenever you want to configure any node as worker node inside the cluster
+ -kubeadm join --token [] --discovery-token-ca-cert-hash []
+.kubeadm token ->this command will help you create tokens 
+ -kubeadm token [create|delete|list|generate]
+.kubeadm version
+ -kubeadm version [flags]
+.kubeadm upgeade -it is a user-friendly command that traps complex upgrading logic behind one command 
+ -kubeadm upgrade plan [version] [flags]
+
+ 
