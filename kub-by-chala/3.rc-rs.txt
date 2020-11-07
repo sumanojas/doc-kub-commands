@@ -1,0 +1,155 @@
+Replication controller:--
+
+=>what is replication controller ?
+-A ReplicationController ensures that a specified number of pod replicas are running at any one time.
+ In other words, a ReplicationController makes sure that a pod or a homogeneous set of pods is always up and available.
+  a.if there are excess pods, they get killed and vice-versa.
+  b.new pods are launched when they get fail, get deleted  or terminated
+-If there are too many pods, the ReplicationController terminates the extra pods. If there are too few, the ReplicationController starts more pods. 
+ Unlike manually created pods, the pods maintained by a ReplicationController are automatically replaced if they fail, are deleted, or are terminated.  
+-replication controllers and pods are associated with "labels"
+-creating a "rc" with count of 1 ensure that a pod is always available.
+
+=>load balancing ?
+-it is a way of distributing incoming traffic from outside world to the application instances which are inside your infrastructure.
+
+=>replication controller - config
+# nginx-rc.yaml
+apiVersion: v1
+kind: Replicationcontroller
+metadata:
+  name: nginx-rc
+spec:
+  replicas: 3
+  selector:
+    app: nginx-app
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+        - containersPort: 80
+
+=>replication controller - create & display
+ - kubectl create -f nginx-rc.yaml
+ - kubectl get pods
+ - kubectl get po -l app=nginx-app
+=>replication controller - Describe
+ - kubectl describe rc nginx-rc
+=>replication controller - node fail
+ - kubectl get po -o wide
+ - kubectl get nodes
+ - kubectl get po -o wide
+=>replication controller - Scaling up
+ - kubectl scale rc nginx-rc --replicas=5
+ - kubectl get rc nginx-rc
+=>replication controller - scaling down
+ - kubectl scale rc nginx-rc --replicas=3
+ - kubectl get rc nginx-rc
+ - kubectl get po -o wide
+=>replication controller - delete
+ - kubectl delete -f nginx-rc.yaml   #kubectl delete rc nginx-rc
+ - kubectl get rc
+ - kubectl get po -l app=nginx-app
+
+ReplicaSet:--
+
+=>what is ReplicaSet ?
+
+-Replica Set is the next-generation Replication Controller. The only difference between a Replica Set and a Replication Controller right now is the selector support.
+ Replica Set supports the new set-based selector requirements as described in the labels user guide whereas a Replication Controller only supports equality-based selector requirements.
+
+-ensures that a specified number of pods are running at any time
+ a.if there are excess pods, they get killed and vice versa
+ b.new pods are launched when they get fails,get deleted or terminated
+-replicaset and pods are associated with "labels".
+
+labels & selectors :--
+
+-Labels are nothing but key-value pairs assigned to Kubernetes Objects like Pods, Service, etc. Labels can be used to organize and to select Kubernetes objects.
+ Labels can be attached to objects at creation time and can be modified at any time. We can add multiple Labels to Kubernetes objects.
+
+-Selectors are used by the users to select a set of objects. The label selector is the core grouping primitive in Kubernetes. Kubernetes API supports two types of selectors
+.equality-based selectors
+.set-based selectors
+
+		Equality-based			|		Set-based
+Operators:					|	Operators:
+   =   ==   !=					|	  in    notin     exists
+Examples:					|	Examples:		
+  environment = production			|	  environment in (production, qa)
+  tier != frontend				|	  tier notin (frontend, backend)
+						|
+Command line					|	Command line
+$ kubectl get pods -l environment=production	| 	  $ kubectl get pods -l environment in (production)
+						|
+In manifest:					|	In manifest:
+						|
+   ...						|	  ...
+   selector:					|	  selector:
+     environment: production			|	   matchExpressions:
+     tier: frontend				|	    - {key: environment, operator:In, values:[prod, qa]}
+   ...						|	    - {key: tier,operator:Notin, values:[frontend,backend]}
+						|	  ...
+Supports:Services,Replication Controller	|	Supports:job,deployment,replica set,daemon set
+						|
+
+
+		
+    ...							...
+    selector:						selector:
+        app: nginx					  matchLabels:
+        tier: frontend  			=	    app: nginx
+    ...							     tier: frontend
+    							...
+    ____________________________________		___________________________________
+    supports on older resources such as:		supports on newer resources such as:
+    . Replicationcontrollers				. ReplicaSets
+    . Services						. Deployments
+							. Jobs
+							. DaemonSet
+
+
+==ReplicaSet- manifest file==
+#nginx-rs.yaml
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-app
+    matchExpressions:
+      - {key: tier, operator: In, values: [frontend]}
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-app
+        tier: frontend
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+      - containerPort: 80
+
+$ kubectl create -f nginx-rs.yaml
+$ kubectl get pods
+$ kubectl get po -l tier=frontend
+$ kubectl get rs nginx-rs -o wide
+$ kubectl describe rs nginx-rs
+
+$ kubectl scale rs nginx-rs --replicas=5
+$ kubectl get rs nginx-rs
+$ kubectl get po -o wide
+$ kubectl delete -f nginx-rc.yaml   #kubectl delete rc nginx-rc
+$ kubectl get po -l app=nginx-app

@@ -1,0 +1,43 @@
+# Service
+# nginx-svc-np.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  lables:
+    app: nginx-app
+spec:
+  selector:
+    app: nginx-app
+  type: NodePort
+  ports:
+  - nodePort: 31000
+    port: 80
+    targetPort: 80
+
+=>ports: primary consists of 3 ports
+nodeport: you can define nodeport manually or kubernetes will allocate one port from the range of 30000 to 32767.
+port:this is the mandatory port that you need to define
+targetport:targetport is the port on the target container where the app is running. generally port & targetport is same.
+
+NodePort - Create & Display
+- kubectl create -f nginx-deploy.yaml
+- kubectl create -f nginx-svc-np.yaml
+- kubectl get service -l app=nginx-app
+- kubectl get po -o wide
+- kubectl describe svc my-service
+IPs and Ports
+- gcloud compute instances list
+NodePort - Accessing using Pod IP
+- kubectl get po -o wide
+- curl http://10.240.2.148:80
+NodePort - Accessing using Service IP
+- kubectl get svc -l app=nginx-app
+- curl http://10.97.148.44:80
+NodePort - Accessing using NodeIP (external IP)
+- kubectl get po -o wide
+- gcloud compute instances list
+ 35.193.47.186:31000
+NodePort - Cleanup
+- kubectl delete svc my-service
+- kubectl get pods

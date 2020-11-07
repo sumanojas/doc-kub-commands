@@ -1,0 +1,31 @@
+Questions ?
+
+-imagine that, you have been asked to deploy web app ?
+-how does this front end web app is exposed to outside world ?
+-how do front end web app is connected to backend database ?
+-how do we resolve Pod IP changes, when they die ?
+
+
+=>why we need a service ?
+=>what is a service ?
+-service is a way of grouping of pods that are running on a cluster services are cheap and you can have as many services as possible within your cluster
+-services provides some of the important features that are standardized across the cluster such as load balancing, 
+ service discovery between apps and features to support zero downtime app deployments
+-let's imagine that we have created pods and services but how do these services discover their respective pods and connect to it answer is labels and selectors
+ so each pod has a label to it for example all the frontend pods can have frontend as a label in pod spec file so to group the frontend pods together 
+ we mentioned the same label in service spec file.
+
+=>types of services:--
+- clusterIP
+  :where you want to connect front-end pods to the backend pods typically we don't expose back-end database pods to the outside world because of obvious security results 
+   then in such cases your clusterIP comes into the picture to connect b/w front-end pods to the back-end pods.
+
+- NodePort
+  :where you want to expose web app to outside world on the internet and that's when we will actually use nodeport.
+
+- load balancer
+  :let's say your frontend app instances are distributed across couple of nodes inside your kubernetes cluster then it comes problematic which node IP should you use to 
+   access the app and the second problem is you don't want to overload one specific node and leave out all other nodes ideal so you need a proper load balancing across 
+   all the nodes so to address this we use a load balancer 
+
+
