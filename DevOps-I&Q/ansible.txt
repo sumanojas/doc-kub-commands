@@ -1,0 +1,104 @@
+-------------------------------------------------------Ansible--------------------------------------------------------------
+1. Why we need ad-hoc ansible commands, scenario where you have used ansible ad-hoc command?
+=>  -An ansible ad-hoc command uses the /usr/bin/ansible command-line tool to automate a single task on one or more managed nodes.
+     Ad-hoc commands are quick and easy, but they are not reusable.
+    Ex:-
+    - ansible all -i '146.148.67.44,' -m ping
+    - ansible dev -i hosts -m ping
+    - ansible dev -i hosts -m setup
+    - ansible dev -i hosts -m copy -a 'src=/home/deekshithsn2/hosts dest=/home/deekshithsn2/'
+
+2. When i need detailed logs on executing ansible playbook what option i need to use?
+=>  - ansible-playbook -i hosts copy.yml -vvvv
+
+3. what is ansible.cfg file?
+=>  - present by default under /etc/ansible
+    - you can define certain settings in ansible.cfg
+    
+4. what are the modules have you worked on? which module will you use for getting the file from node to master?
+=>  -copy,fetch,yum,debug,get_url,expect,template,file,apt,command,shell
+    -fetch
+---
+- hosts: dev
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Install application tree
+      fetch:
+        src: /home/spovedd/a
+        dest: /home/spovedd
+# ansible-playbook -i hosts fetch.yml
+
+5. Lets say i have a playbook which has 5 tasks in playbook, first 2 tasks should run on local machine and other 3 tasks should run on node?
+=>  
+---
+- hosts: localhost
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: installing wget 
+      apt:
+        name: wget
+        state: present 
+    - name: download Jenkins
+      get_url:
+        url: https://updates.jenkins-ci.org/download/war/2.248/jenkins.war
+        dest: /home/spovedd
+    
+- hosts: dev
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: copy jenkins war to host machines
+      copy:
+        src: /home/spovedd/jenkins.war
+        dest: /home/jenkins.war
+    - name: creating folder structure and running jenkins in the background 
+      shell: |
+        mkdir -p /home/spovedd/jenkins
+        mv /home/jenkins.war /home/spovedd/jenkins
+        nohup java -jar /home/spovedd/jenkins/jenkins.war &
+
+6. Lets say i have 4 machines consider 1 as ansible master other 3 as nodes, what are the basic setup you need to do for ansible cluster?
+=>
+
+7. what are ansible roles? why we need ansible roles? have you worked on ansible galaxy?
+=>
+-roles provide a framework for fully independent, or interdependent collections of variables,tasks,files,templates,and modules.
+-in ansible,the role is the primary mechanism for breaking a playbook into multiple files.
+ this simplfies writing complex playbooks and it makes them easier to reuse.
+-the breaking of playbook allows you to logically break the playbook into reusable components.
+-roles are not playbooks.roles are small funtionality which can be independently used but have to be used within playbooks.
+-there is no way to directly execute a role. roles have no explicit setting for which host the role will apply to.
+-make use of ansible galaxy commands to create folder structure for of roles - httpls://galaxy.ansible.com/
+-ansible-galaxy search role_name, ansible-galaxy init role_name, ansible-galaxy inti --force --offline role_name
+
+8. What are ansible facts?
+=>
+-ansible collects pretty much all the information about the remote hosts as it runs a palybook.
+ the task of collecting this remote system information is called as Gathering Facts by ansible
+ and the details collected are generally known as facts or variables.
+
+-this informmation can be obtained manually using ansible adhoc command and a specialized module named setup.
+ in fact, ansible playbooks call this setup module by default to perform Gathering facts task.
+ ansible all -i '<remote-ip>,' -m setup
+
+9. Can we have windows machine as ansible master? as node?have you worked on any windows modules? can you list few?any extra configuration do we need to do?
+
+=> No, you can't have window machine as ansible master. but for node it's possible.
+
+10. Why ansible ? What makes ansible powerful than other tools like chef and puppet?
+
+11. 5 modules that you have worked on? Can we create custom module ?
+
+12. What is dynamic inventory in ansible?
+
+13. Lets say I have both Ubuntu and centos machines as nodes I want install application tree using same playbook, how would you approach this scenario? 
+
+14. How to handle prompts with ansible playbook?
+
+15. what is roles ?
+
+=>In Ansible, the role is the primary mechanism for breaking a playbook into multiple files.
+  This simplifies writing complex playbooks, and it makes them easier to reuse.
+  The breaking of playbook allows you to logically break the playbook into reusable components.

@@ -1,0 +1,100 @@
+-------------------------------------------------------Docker-----------------------------------------------------------------------
+1. Any 3 best practices of docker?
+
+=>  -always keep Dockerfile in empty directory or make sure directory where Dockerfile present with required files
+    -use official images when possible
+    -use more specific tags
+      the "latest" tag is a rolling tag. be specific, to prevent unexpected changes in your base image.
+    -look for minimal flavors
+      just using a different base image reduced the image size by 540MB
+    -Multi-stage builds to remove build deps
+
+2. Difference between docker stop and docker kill?
+
+=>  docker stop:
+    . stop a running container(send SIGTERM, and then SIGKILL after grace period)
+    . the main process inside the container will receive SIGTERM, and after a grace period, SIGKILL.
+
+    docker kill:
+    . kill a running container (send SIGKILL, or specified signal)
+    . the main process inside the contianer will be sent SIGKILL, or any signal specified with option --signal.
+
+3. Command to list containers which state is exited?
+
+=>  -docker ps -a -f status=running
+    -docker ps -a -f status=exited
+    -docker ps -a -f status=created
+    -docker rm $(docker ps -a -f status=exited -q)
+
+4. command to clean-up docker host ( deleting stopped conatiners, dangling images and unused networks)?
+
+=>  -docker system prune
+
+5. What version of docker you have used? Specific reason to use that particular version?
+
+=>  
+
+6. Can we have multiple CMD in Dockerfile?
+
+=>  - we can have it but no use like when you have multiple cmds only the last cmd will be taken into account.
+      so multiple cmds if you have it's no use only last cmd it's going to take.
+
+7. Have you worked on docker swarm and docker compose?
+
+=>  - Docker swarm:-
+    . A docker swarm is a group of either physical or virtual machines that are running the docker application and that have been configured to join together in a cluster.
+    . Docker swarm is a container orchestration tool, meaning that it allows the user to manage multiple containers deployed across multiple host machines.
+
+    - Docker compose:-
+    . Compose is a tool for defining and running multi-container Docker applications.
+    . with compose, you use a yaml file to configure your application's services.
+
+8. Have you worked on multi-stage dockerfile and why we need that?
+
+=> With multi-stage builds, you use multiple FROM statements in your Dockerfile. Each FROM instruction can use a different base, and each of them begins a new stage of the build.
+   You can selectively copy artifacts from one stage to another
+
+9. Lets say i have container which is attached with a volume, if container crashes what happens to volume?
+
+=>  -sudo docker run -it --name my-volume-test -v data-volume:/data busybox /bin/sh
+    volume won't be deleted.
+    -docker volume ls
+
+10. can you copy a file from local to run container?
+
+=>  yes
+  docker cp <filename> <container-id:/>
+you can check 
+ docker exec -it <container-id> /bin/sh 
+
+11. Lets say I have 1 GB file that has to be sent to docker daemon, as its 1GB it will take muchtime and network too.
+    By which option while building dockerfile we can send the fileIn better manner?
+
+=>  docker build --compress .
+
+12. What is the difference between ADD and COPY docker instructions in Dockerfile?
+
+=>  COPY and ADD are both Dockerfile instructions that serve similar purposes. They let you copy files from a specific location into a Docker image.
+    COPY takes in a src and destination. ... A valid use case for ADD is when you want to extract a local tar file into a specific directory in your Docker image.
+
+13. Command to remove to stopped and running Containers?
+
+=>
+docker ps -aq
+docker stop $(docker ps -qa)
+docker rm $(docker stop $(docker ps -qa))
+  
+14. Inside the container I did many changes like  Creating, modifying and deleting file but I Wanted to check which files has been changed And
+    what action has been taken what is the  Command we need to use ?
+
+=>
+docker diff <container-id>
+
+15. What does ONBUILD instruction do in Dockerfile?
+
+16. What is the use of .dockerignore file?
+
+17. I have dockerfile that accepts arguments, if I supply value as “1” then it should use maven 2.x version for base image and if I supply “2” then it should take maven latest as base image 
+
+18. What are docker compose and docker swarm?
+

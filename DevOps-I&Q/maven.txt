@@ -1,0 +1,60 @@
+1. when i issue mvn install what all things happen in background?
+
+=> build lifecycle basics
+   - there are three built-in build lifecycles: default, clean and site.
+    . the default lifecycle handles your project deployment.
+    . the clean lifecycle handles project cleaning.
+    . while the sites lifecycle handles the creation of your project's site documentation.
+
+   - phases of default lifecycle
+    . validate- validate the project is correct and all necessary information is available.
+    . compile- compile the source code of the project.
+    . test- test the compiles source code using a suitable unit testing framework. these tests should not require the code be packages or deployed.
+    . package- take the compiled code and package it in its distributable format, such as a JAR.
+    . verify- run any checks on results of integration tests to ensure quality criteria are met
+    . install- install the package into the local repository, for use as a dependency in other projects locally
+    . deploy- done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.
+
+2. what are the settings you need to do before running mvn deploy?
+=> 
+3. why maven takes much time for 1st execution and from 2nd execution it will take less time?
+
+=> -while executing first it will check in the local repository if that dependency is there in local repository so then it will fetch it from here
+    if it doen't exist then it will go to central repository and then it will fetch it.
+    so that's why when you execute for the first time it will take much time so when you execute for the second time 
+    so already all dependencies will be downloaded so that's the reason it will take very less time.
+
+4. what is multi module project in maven and what are the setting you want to do in multi module parent and child project? what is dependency management?
+
+=>  
+
+5. what is transitive dependency?
+=>
+
+6. .m2 is local repository for maven, now I don’t want to use .m2 folder as my local repository I want to use some other folder as my local, is it possible in maven?
+   If yes, how would you do that?
+
+=> mvn install -Dmaven.repo.local=/alternate/repo/location 
+
+7. maven follows convention over configuration that means it assumes code should be there under src/main/java, test cases under src/tests and many more.
+   Here my requirement is I don’t want to follow that conventions I need to use different folder structure is that possible in maven?
+
+=> mvn help:effective-pom -Doutput=pom_eff.xml
+
+8. What are dependency and plugin in maven? Give one example for each?
+=>
+
+9. What are 3 build life cycles in maven?
+=>
+
+10. In Which tag we will mention output artifact type( like jar, war or any other)?
+=>
+
+11. What are things you need to set, if you want download dependency from private repository ?
+=>
+
+12. What are the issues you faced while working on maven projects?
+=>
+
+13. Command to skip the test cases in maven
+

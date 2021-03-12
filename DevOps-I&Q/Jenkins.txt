@@ -1,0 +1,78 @@
+------------------------------------------------------Jenkins-----------------------------------------------------------------
+1. How to save only last 5 builds of jenkins job?
+=>  - there will be an option so when you click on configure and you will get an option so "discard old builds" in that max no of builds to keep you say 5 and save it
+      and then go back to build with parameters and click on build.
+
+2. Have you worked on Jenknsfile? can we use docker container as a node in Jenkinsfile? Who will handle docker container creation and deletion?
+    If i am building a maven project always docker container is fresh instance it will try to download dependency from repository,
+    what measures you will take to reduce build time?
+=>  
+
+3. Why we need multi branch pipeline?
+=>  -the multibranch pipeline project type enables you to implement different jenkinsfiles for different branches of the same project.
+    -in a multibranch pipeline project, jenkins automatically discovers, manages and executes pipelines for branches which contain a jenkinsfile in source control.
+
+4. If you forget Jenkins password, how would you login back?
+=>  -http://abhijitkakade.com/2019/06/how-to-reset-jenkins-admin-users-password/
+
+5. Have you worked on commit based job in jenkins? what settings you need to do in jenkins and github to setup commit based job?
+
+=> -webhooks
+
+6. you want to create 50 freestyle jobs with same configurations, but only change is job name. how would you achieve teh same?
+
+=> -jenkins-->manage jenkins-->script console
+import hudson.plugins.git.*;
+
+def scm = new GitSCM("git@github.com:dermeister0/Tests.git")
+scm.branches = [new BranchSpec("*/develop")];
+
+def flowDefinition = new org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition(scm, "Jenkinsfile")
+
+def parent = Jenkins.instance
+def job = new org.jenkinsci.plugins.workflow.job.WorkflowJob(parent, "New Job")
+job.definition = flowDefinition
+
+parent.reload()
+
+7. How can you copy job from your local jenkins instance to other local jenkins instance?
+
+=> -cd ~/.jenkins/
+   -cd jobs/
+   -ls
+   -cd web-hook/
+   -ls
+   -cd ..
+   -ls
+   -mkdir copy-1
+   -cd web-hook/
+   -cp -r . ../copy-1/
+   -ls ../copy-1/
+ then go to manage jenkins-->reload configuration from disk--> click on that
+
+8. How to Downgrade plugins in Jenkins?
+=>
+
+9. Have you worked on Jenkinsfile? Can we use different nodes for each stage?
+=>  
+
+10. Can you list few ways by which we can trigger our build in Jenkins? What is the difference between Build Periodically and Poll SCM? 
+=>
+
+11. How to set Jenkins build to fail based specific word in console output ?
+=>
+
+12. How to set Jenkins build to fail based specific word in console output ?
+=>
+
+13. What are active and reactive parameters (Dynamic parameterization) in Jenkins ?
+=>
+
+14. How to customize the build number display to something else in Jenkins job page?
+=>
+
+15. What are multi branch pipeline?
+=>
+
+16. What is shared library in Jenkins ?
+=>

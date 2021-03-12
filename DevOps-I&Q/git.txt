@@ -1,0 +1,92 @@
+1. Why we need git? What makes git unique from other tools like SVN?
+
+=> -git is the most commonly used version control system.
+   -git tracks the changes you make to files, so you have a record of what has been done, and you can revert to specific versions.
+   -git also makes collaboration easier, allowing changes by multiple people to all be merged into one source.
+
+2. Let's say i have maven repo cloned on to my local, did some changes and i have build the code now target folder will be generated.
+   So now when i do git operations like git add, git commit or any other git operations target folder should not be considered, how would you achieve the same?
+
+=> - vi .gitignore
+   - take that target file into that .gitignore file
+
+3. difference between git pull and git fetch?
+
+=> Git pull:
+   - it performs two functions using a single command.
+   - it fetches all the changes that were made to the remote branch and then merges those changes into your local branch
+     git pull = git fetch + git merge
+   Git fetch:
+   - git fetch does only half the work of git pull. it just brings the remote chages into your local repo but does not apply them onto your branches. you have to explicity apply those changes
+
+4. How to clone specific branch in git?
+
+=> -git clone -b <branchname> --single-branch <url>
+
+5. Lets say your organization has github and bitbucket to store code, you have cloned a repo onto your local and changed directory name.
+   after some days one of your team members asks you to share clone link, how would you provide the same?
+
+=> - git remote -v
+
+6. I have shell script to delete particular dependency ( repo is maven project ). before running the script i need to clone repo to my local,
+   here point to note i should only clone master branch and only last commit ( last commit has all the code ) how would you do this?
+
+=> - git clone -b master --single-branch --depth 1 <url>
+   - cd <folder>
+   - git log --oneline
+
+7. what is submodule and why we need submodule?
+
+=> -Submodules - repositories inside other Git repositories
+    Git allows you to include other Git repositories called submodules into a repository. ... 
+    Submodules allow you to keep projects in separate repositories but still be able to reference them as folders in the working directory of other repositories.
+
+8. Lets say you have changed 5 files a,b,c,d and e in a repo and you did git add ., now all the files are in staging area, now i decided not to commit file d.
+   how would delete it from staging area?
+
+=> -touch a b c d e
+   -git add .
+   -git status
+   -git rm --cached d
+   -git status
+
+9. What is git-cherry-pick? why we use it?
+
+=> git cherry-pick is a powerful command that enables arbitrary Git commits to be picked by reference and appended to the current working HEAD.
+   Cherry picking is the act of picking a commit from a branch and applying it to another. git cherry-pick can be useful for undoing changes.
+
+10. Let’s say you’re working on new feature in some branch, now your manager says stop working on that and change few other things on old code.
+   Here after changing the old code, I need to work on new code, so I need to place my new changes some place How would handle this scenario? 
+
+=> git stash
+   git stash list
+   git stash apply
+
+11. What is a conflict in git?
+
+12. command to list all branches in a repo?
+=> git branch -a
+
+13. What is git reset ? Types of reset ?
+=>
+In the simplest terms:
+--soft: uncommit changes, changes are left staged (index).
+--mixed (default): uncommit + unstage changes, changes are left in working tree.
+--hard: uncommit + unstage + delete changes, nothing left.
+
+14. How to delete local branch  and remote branch in git ? 
+=> 
+Local branch:--
+-git branch -a
+-git branch -d test
+remote branch:--
+-git branch -a
+-git push origin --delete test
+
+15. Difference between git diff and git status ?
+
+16. What are hooks in git? 
+
+=> Git hooks are scripts that run automatically every time a particular event occurs in a Git repository.
+   They let you customize Git’s internal behavior and trigger customizable actions at key points in the development life cycle.
+

@@ -1,0 +1,13 @@
+=>what is prometheus ?
+:promethus is a time series database.prometheus is designed to monitor targets.
+ servers, databases, standalone virtual machines,pretty much everything can be monitored with prometheus.
+:you can also monitor your application's or docker host and kubernetes cluster by using prometheus easily.
+
+when does it fit?
+-purely numeric time series.
+-it fits both machine-centric monitoring and highly dynamic service-oriented architectures.
+-prometheous is designed for reliability, during an system outage it allow you to quickly diagnose problems.
+-each prometheus server is standalone, does not depend on any n/w storage or other remote services.
+
+when does it not fit?
+-if you need 100% accuracy, such as for per-request billing, prometheus is not a good choice

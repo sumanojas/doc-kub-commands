@@ -1,0 +1,143 @@
+1. Can we have multiple containers in a pod? Can we have similar containers in a pod?
+   Lets say i have 4 containers, one of them has failed how would you check which container has failed?
+
+=>  =)yes, we can have a multiple containers in a pod
+    =)similar containers can't be there in a pod
+    =).kubectl get all
+      .kubectl describe pod <podname>
+
+2. What is liveness and readiness probe? Why we need them?
+=>
+  Liveness Probe:- 
+  - The kubelet uses liveness probes to know when to restart a container.
+    For example, liveness probes could catch a deadlock, where an application is running, but unable to make progress.
+    Restarting a container in such a state can help to make the application more available despite bugs.
+
+  Readiness Probe:-
+  - The kubelet uses readiness probes to know when a container is ready to start accepting traffic.
+    A Pod is considered ready when all of its containers are ready. One use of this signal is to control which Pods are used as backends for Services.
+    When a Pod is not ready, it is removed from Service load balancers.
+
+3. Have you worked on kubernetes monitoring? Which tools you have used?
+=>
+
+4. Can we deploy a pod on particular node?
+=>  - yes we can do that for this there are many ways like there is a node selector or node affinity and many
+
+5. what is init container and side-car container?can you give simple scenario where we use these conatiners?
+
+=>  init container:-
+    :it executes before your application container execute and also which won't be running always which executes to the success and then it'll gonna kill itself
+    -init container runs before your application container runs and also it will be executed to the success and also you can have multiple init containers.
+     so it will gonna execute one after the other first init container second container like that so if second init container fails so then your whatever deployment 
+     you are creating so it will gonna fail.
+    -so init container is basically used for if you want to do any pre-configuration before running your application so then you will go for this init containers.
+    side-car container:-
+    :side-car containers which is similar to your application container which won't be used for like actual purppose
+     which is just like a helper for your application containner but just sites beside to your application container for support of your application.
+
+6. which one is default deployment strategy? how it works?
+
+=> rolling update
+
+7. command to check the container logs in pod?
+ 
+=> kubectl get all
+   kubectl logs <pod name> -c <container name>
+
+8. what are the types of services present in kubernetes?
+
+=> :types of services
+   
+ClusterIP -this helps in restricting the service within the cluster. it exposes the service within the defined kubernetes cluster.
+NodePort -it will expose the service on a static port oon the deployed node. A clsuterIP service, to which NodePort service will route 
+          is automatically created.the service can be accessed from outside the  cluster using the NodeIP:nodePort
+LoadBalancer -it uses cloud providers load balancer. nodeport and clusterIP services are created automatically to which the external
+              load balancer will route.
+   
+9. What is the link between pod and service?
+
+=> 
+
+10. List objects you know in kubernetes?Give a brief about each object?
+=>  deployments, pods,replica sets,services,ingress controller,network policies, pod security policies,cron jobs,stateful sets,deamon sets.
+
+11. Command to list pods and deployments.
+=>  
+kubectl get all
+kubectl get po,deploy
+
+12. Components in kubernetes architecture?
+=>
+
+13. What are stateful sets in kuberentes?
+=>
+
+14. Command to find which container has failed in pod and command to get logs of container 
+=>
+
+15. Tools to maintain kubernetes log files 
+=>
+
+16.What is Ingress?
+ 
+=>Ingress exposes HTTP and HTTPS routes from outside the cluster to services within the cluster.
+  Traffic routing is controlled by rules defined on the Ingress resource.
+
+17.HELM ?
+
+=>Deploying applications to Kubernetes – the powerful and popular container-orchestration system – can be complex.
+  Setting up a single application can involve creating multiple interdependent Kubernetes resources –
+  such as pods, services, deployments, and replicasets – each requiring you to write a detailed YAML manifest file.
+
+ -Helm is a package manager for Kubernetes that allows developers and operators to more easily package, configure,
+  and deploy applications and services onto Kubernetes clusters.
+
+18.ConfigMaps
+
+=> A ConfigMap is an API object used to store non-confidential data in key-value pairs.
+   Pods can consume ConfigMaps as environment variables, command-line arguments, or as configuration files in a volume.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+19. what is basic difference between deployment and statefulset
+=>.Deployment is a resource to deploy a stateless application, if using a PVC, all replicas will be using the same Volume and none of it will have its own state.
+
+  Statefulsets is used for Stateful applications, each replica of the pod will have its own state, and will be using its own Volume.
+
+20. what are the objects used in kubernetes ?
+A.
+
+21. what is the use of service account ?
+=>In Kubernetes, service accounts are used to provide an identity for pods.
+  Pods that want to interact with the API server will authenticate with a particular service account.
+  By default, applications will authenticate as the default service account in the namespace they are running in.
+  This means, for example, that an application running in the test namespace will use the default service account of the test namespace.
+
+22. What is static pod in Kubernetes?
+=>-Static Pods are managed directly by the kubelet daemon on a specific node, without the API server observing them.
+   Unlike Pods that are managed by the control plane (for example, a Deployment); instead, the kubelet watches each static Pod (and restarts it if it fails) 
+
+23. What is a DaemonSet?
+=>-Kubernetes DaemonSet is a container tool that ensures that all nodes(or a specific subset of them, but we’ll get to that later) are running exactly one copy of a pod.
+   DaemonSets will even create the pod on new nodes that are added to your cluster!
+  -When using Kubernetes, most of the time you don’t care where your pods are running, but sometimes you want to run a single pod on all your nodes.
+   For example, you might want to run fluentd on all your nodes to collect logs.
+   In this case, using a DaemonSet tells Kubernetes to make sure there is one instance of the pod on nodes in your cluster.
+
+24. do you know high availability in pod level?
+=> 
+
+25.How To Schedule Pods on Kubernetes Control plane (Master) Nodes
+=>-By default, your Kubernetes Cluster will not schedule pods on the control-plane node for security reasons.
+   It is recommended you keep it this way, but for test environments you may want to schedule Pods on control-plane node to maximize resource usage.
+  -If you want to be able to schedule pods on the Kubernetes control-plane node, you need to remove a taint on the master nodes.
+    kubectl taint nodes --all node-role.kubernetes.io/master-
+
+26.what is RBAC ?
+
+=>RBAC stands for Role-Based Access Control. It is an approach that is used for restricting access to users and applications on the system/network.
+  RBAC is used by Kubernetes for authorization, for example giving access to a user, adding/removing permissions and setting up rules, etc.
+  So basically, it adds security to a Kubernetes cluster. RBAC in Kubernetes is the way that you restrict who can access what within the cluster.
+
+27.what is the use of pv and pvc ?
