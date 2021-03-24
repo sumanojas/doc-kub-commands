@@ -1,0 +1,65 @@
+
+
+
+			How do you run pods
+ 			till task completion?
+				&
+			at scheduled times?
+
+=>what is jobs ?
+.job is a controller which supervises pods for carrying out certain tasks at a high level jobs are two types 
+ one is run to completion which is simply called as jobs and
+ other is scheduled which is known as cron jobs
+. run to completion:-
+  . job is simply referred as jobs this is primarily used for performing batch processing so as soon as we submit this job manifest file to the API server pod will kick in and 
+    it will execute a task and when the task is completed it will shutdown by itself so it's called as run to completion job.
+  . here controller wil wait for the exit code 0 and the movement pod gets the exit code 0 then job will move away so once the job is completed pods will move from running state
+    to shutdown state here kubernetes will not automatically delete these pods we have to do this manually.
+  . each job creates one or more pods
+  . ensures they are successfully terminated
+  . job controller restarts or rescheduled if a pod or node fails during execution
+  . can run multiple pods in parallel 
+  . can scale up using kubectl scale command
+  use cases:
+  . one time intialization of resources such as Databases
+  . Multiple workers to process messages in queue.
+
+   producer --------> work queue -------> consumer
+
+Config file
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: countdown
+spec:
+  template:
+    metadata:
+      name: countdown
+    spec:
+      containers:
+      - name: counter
+        image: centos:7
+        command:
+         - "bin/bash"
+         - "-C"
+         - "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"
+      restartPolicy: Never
+
+Create, Display and Test
+- kubectl create -f countdown-jobs.yaml
+- kubectl get jobs
+- kubectl get po
+- kubectl logs countdown-brzdt
+Describe
+- kubectl describe jobs countdown
+Cleanup
+- kubectl delete jobs countdown
+- kubectl get po
+
+summary:
+ concept
+ a. job is a controller in k8s, which supervises pods for carrying out certain tasks
+ b. run-to-completion(jobs) and scheduled jobs(cronjob)
+ c. run-to completion
+
+

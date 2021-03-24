@@ -1,0 +1,39 @@
+LoadBalancer :--
+ -load balancer service is the standard go-to solution if you want to expose your app on to the internet 
+ -for example let say that if you have all your setup on clouds such as Google or AWS or Azure cloud then once you create the service of type load balancer 
+  it will automatically create the load balancer in the backend and generates public IP address for you once that is done you can use that public IP address 
+  which will forward all the traffic to your service and you can send HTTP TCP UDP and all different kinds of traffic 
+
+LoadBalancer - config
+# Service - loadbalancer
+# nginx-service-lb.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  labels:
+    app: app-nginx
+spec:
+  selector:
+    app: nginx-app
+  type: LoadBalancer
+  ports:
+  - nodePort: 31000
+    port: 80
+    targetPort: 80
+
+# kubectl expose deploy nginx-deployment --name=nginx-service --port=80 --target-port=80 --type=LoadBalancer
+
+LoadBalancer - Create & Display
+- kubectl create -f nginx-deploy.yaml
+- kubectl create -f nginx-service-lb.yaml
+- kubectl get service -l app=nginx-app
+
+LoadBalancer - LoadBalancer - Display
+- kubectl get service -l app=nginx-app
+- kubectl describe service my-service
+ 
+LoadBalancer - Accessing using LoadBalancer
+- kubectl describe service my-service | grep Load
+- kubectl delete servcie my-service
+- kubectl get pods
