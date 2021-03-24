@@ -1,0 +1,195 @@
+Docker volumes
+----------------
+
+1.persist application data using docker volumes
+
+2.Managing data is necessary for the stateful applications even though container deleted. In this demonstration we are going to see how can we achieve this.
+
+Using Named Volumes
+-------------------
+1.Create a jenkins container
+
+docker run --name vtjenkinsprd01 -p 8080:8080 -p 50000:50000 -v vtjenkinsprd01_jenkins_home_vol:/var/jenkins_home jenkins/jenkins:lts
+
+2.Create a test job on jenkins console
+
+3.check for the job info on the container
+
+docker volume ls
+docker inspect <volume_name>
+
+4.Delete jenkins container
+
+docker stop vtjenkinstest01
+docker rm vtjenkinstest01
+
+5.Create a new container with existing volume.
+
+docker run -d --name vtjenkinsprd02 -p 8090:8080 -p 55000:50000 -v vtjenkinsprd01_jenkins_home_vol:/var/jenkins_home jenkins/jenkins:lts
+
+
+Using host volumes
+----------------------
+
+1.Create a directory or filesystem and change permssions to 777
+
+mkdir /opt/jenkins
+chmod 777 /opt/jenkins
+
+2.Create jenkins server using above directory
+
+docker run --name vtjenkinsprd01 -p 9000:8080 -p 60000:50000 -v /opt/jenkins:/var/jenkins_home jenkins/jenkins:lts
+
+
+
+
+
+How can attach multiple volumes to a single container
+-------------------------------------------------------
+
+docker run -ti -v DataVolume1:/datavolume1 -v DataVolume2:/datavolume2 ubuntu
+
+
+scale the web containers(ngnix) by using docker-compose.yml
+-----------------------------------------------------------
+
+version : "3"
+services:
+  web:
+    image: "nginx:latest"
+    ports:
+    - "80-85:80":wq1
+  database:
+    image: "redis"
+
+
+ ->docker-compose up -d --scale web=3
+
+-------------------------------------------------------------------------------------------
+
+
+-> No need to maintain Naming as Dockerfile always we can use user defined names also while creating docker files.
+
+Ex:
+--
+Create a docker file in root directory with custom name
+ -> vi file 
+
+place the below code in above file
+ -> FROM ubuntu
+
+    RUN apt-get update
+
+    CMD ["echo", "Hello World"] 
+
+Now build the docker image
+ -> docker build -t myimage -f file .
+
+Ex:
+---
+Create a docker file in any directory with custom name
+ -> mkdir test
+ -> cd test
+ -> vi mydockerfile
+
+place the below code in above file
+ -> FROM ubuntu
+
+    RUN apt-get update
+
+    CMD ["echo", "Hello World"]
+
+Now build the docker image in root directory
+ -> cd ~
+ -> docker build -t testimage -f test/mydockerfile .
+
+
+
+
+
+
+Docker Networking
+------------------
+It is a communication passage through which all the isolated containers communicate with each other in various situations to perform the required actions.
+
+Docker networking allows you to attach a container to as many networks as you like.
+
+
+Network drivers
+-----------------
+There are mainly 5 network drivers:
+
+1.Bridge
+2.Host
+3.None
+4.Overlay 
+5.Macvlan
+
+Bridge:
+------
+This is a private default internal network created by docker on the host. So, all containers get an internal IP address and these containers can access each other, using this internal IP. The Bridge networks are usually used when your applications run in standalone containers that need to communicate.
+
+Host:
+-----
+This driver removes the network isolation between the docker host and the docker containers to use the host’s networking directly. So with this, you will not be able to run multiple web containers on the same host, on the same port as the port is now common to all containers in the host network.
+
+None:
+------
+In this kind of network, containers are not attached to any network and do not have any access to the external network or other containers. So, this network is used when you want to completely disable the networking stack on a container and, only create a loopback device.
+
+Overlay:
+-------
+Creates an internal private network that spans across all the nodes participating in the swarm cluster. So, Overlay networks facilitate communication between a swarm service and a standalone container, or between two standalone containers on different Docker Daemons.
+
+Macvlan:
+--------
+Allows you to assign a MAC address to a container, making it appear as a physical device on your network. Then, the Docker daemon routes traffic to containers by their MAC addresses. Macvlan driver is the best choice when you are expected to be directly connected to the physical network, rather than routed through the Docker host’s network stack.
+
+
+
+
+-->To demenistrate this concept lets start with birdge network. You can check networks in docker by using
+
+ --> docker network ls
+
+You can see few networks these are default networks. By default all networks associated with bridge network. We can create our own networks.
+
+1.Create 2 containers in the default bridge network
+  docker run -d -it --name nginxappint01 -p 8081:80 nginx 
+  docker run -d it --name nginxappint02 -p 8082:80 nginx
+2.try to access one container with other it should work
+  docker exec -it nginxappint01 /bin/bash 
+  # on container
+  sudo apt install iputils-ping
+  ping <nginxint02_IP> 
+3.Create 2 saparate bridge networks
+	docker network create --driver=bridge --subnet=192.168.0.0/16 192_network
+	docker network create --driver=bridge --subnet=172.28.0.0/16 172_network
+4.create a container on each network
+	docker run -it --name nginxappuat01 --network 192_network -p 8083:80 nginx
+	docker run -it --name nginxappuat02 --network 172_network -p 8084:80 nginx
+5.try to access one container with other. it shouldn't works.
+  docker exec -it nginxuat01 /bin/bash 
+  # on container]
+  apt-get update 
+  apt install net-tools 
+  apt install iputils-ping
+  ping <nginxint02_IP> 
+docker inspect network
+
+docker run -it --name nginxappuat03 --network 172_network -p 8085:80 --ip 172.28.5.100 nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
