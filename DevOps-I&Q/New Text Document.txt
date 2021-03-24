@@ -1,0 +1,66 @@
+1. aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin <ecr-repositorylink>
+2. docker tag <docker-image:latest> <ecr-repositorylink/docker-image:latest
+3. docker push <ecr-repositorylink/docker-image:latest
+
+
+
+docker tag local-image:tagname new-repo:tagname
+docker push new-repo:tagname
+
+
+version: 0.2
+
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=public.ecr.aws/t3j5h0w6/ecr-suman
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"nodeapp","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json 
+artifacts:
+    files: imagedefinitions.json
+
+////////////////////////////////////////////////////////
+
+node(){
+    stage('ui-kit'){
+        dir('ui-kit'){
+        git credentialsId: 'git', url: 'https://github.com/ojashub/voyaah-ui-kit.git'
+        sh 'npm i'
+        sh 'npm run testbuild'
+        }
+    }
+    stage('api-server'){
+        dir('api-server'){
+        git credentialsId: 'git', url: 'https://github.com/ojashub/voyaah-api-server.git'
+        sh 'rm -rf /var/lib/jenkins/workspace/voyaah-dev/api-server/public/svg *.css *.js *.woff2 *.woff *.ttf *.eot index.html assets *.txt *.png'
+        sh 'cp -R /var/lib/jenkins/workspace/voyaah-dev/ui-kit/dist/app/browser/* /var/lib/jenkins/workspace/voyaah-dev/api-server/public/'
+        //sh '/opt/killproces.sh'
+        sh 'aws s3 rm s3://mypersonals2/* --recursive'
+        sh 'aws s3 cp /var/lib/jenkins/workspace/voyaah-dev/api-server/ s3://mypersonals2/ --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers --recursive'
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////
+
+ 
+DevOps CI/CD Jenkins Pipeline, Ansible & Docker | For DevOps Online training call +919886611117

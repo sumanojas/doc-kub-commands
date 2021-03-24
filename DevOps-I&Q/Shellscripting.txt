@@ -1,10 +1,10 @@
 --------------------------------------------- Unix and Shell Scripting ------------------------------------------------------------
-1. How to get present working folder?
+q. How to get present working folder?
 @> -basename "$PWD"
       or
    -pwd | rev | cut -d '/' -f 1 | rev
 
-2. How to copy files from local windows machine to cloud based Linux machine?
+q. How to copy files from local windows machine to cloud based Linux machine?
 @> To receive (a) file(s) from a remote server:
    -pscp [options] [user@]host:source target
    -pscp fred@example.com:/etc/hosts c:\temp\example-hosts.txt
@@ -13,7 +13,7 @@
    -pscp [options] source [source...] [user@]host:target
    -pscp c:\documents\foo.txt fred@example.com:/tmp/foo
 
-3. A shell script named test.sh can accept 4 parameters i.e, a,b,c,d.
+q. A shell script named test.sh can accept 4 parameters i.e, a,b,c,d.
     the parameters wont be supplied in order always and number of parameters might also vary( only 2 parameters user might supply sometimes),
     how to identify position of letter c?
  
@@ -25,7 +25,7 @@ for p in "$@" ; do
         fi
 done
 
-4. write a script which accepts file or folder, if its folder delete it else print "this is a file"?
+q. write a script which accepts file or folder, if its folder delete it else print "this is a file"?
 @=>
 
 read input
@@ -38,11 +38,11 @@ else
 echo "file or directory not found"
 fi
 
-5. How to check whether particular port is already in use or not?
+q. How to check whether particular port is already in use or not?
 =>
 netstat -tupln
 
-6. Logic for checking whether supplied string for a script is palindrome or not? what are all the commands you will use?
+q. Logic for checking whether supplied string for a script is palindrome or not? what are all the commands you will use?
 =>
 read palindrome
 reverse=$( echo $palindrome | rev )
@@ -52,19 +52,27 @@ else
 echo "its not palindrome"
 fi
  
-7. command to get number of lines in a file?
+q. command to get number of lines in a file?
 =>
 cat <filename> | wc -l
 
-8. In a file I have ip addresses , I want list unique ip addresses with number of times its present in file?
+q.lets say i have a application log file, need a identify from which ip's my application has been accessed and for how many times.
+=>
+grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" logfile | sort | uniq -c | sort -nr
+grep options
+-E (extended regular expression)
+In basic regular expressions the meta-characters '?','+','{','|','(', and ')' lose their special meaning; instead use the backslashed versions '\?','\+','\{','\|','\(', and '\0'.
+-o (matching only)
+
+q. In a file I have ip addresses , I want list unique ip addresses with number of times its present in file?
 
 ```
 grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" logfile | sort | uniq -c | sort -nr
 ```
-9. What is exit status in UNIX?
+q. What is exit status in UNIX?
 =>  echo $?
 
-10. Lets say I have shell script name magic.sh when I execute. It gives “This is from magic.sh”, so now if I change file name to magic-test.sh
+q. Lets say I have shell script name magic.sh when I execute. It gives “This is from magic.sh”, so now if I change file name to magic-test.sh
     I should get “This is from magic-test.sh” basically as name of file chages my output should also change?
 =>  
 vi magic.sh
@@ -73,12 +81,98 @@ sh magic.sh
 mv magic.sh magic-test.sh
 sh magic-test.sh
 
-11. What is shebang ? Why it is used?
+q. What is shebang ? Why it is used?
 =>  The shebang is a special character sequence in a script file that specifies which program should be called to run the script.
     The shebang is always on the first line of the file, and is composed of the characters #! followed by the path to the interpreter program
 
-12. Command to find empty files in a given directory?
-13. Commands you will use it for configuring ssh connectivity between 2 machines and what files will be present in .ssh folder?
-14. How to schedule a shell script in unix machines?
-15. Command to get load average ?
-16. Need to identify ip addresses in log file and count of ip addresses in log file?
+q. Command to find empty files in a given directory?
+q. Commands you will use it for configuring ssh connectivity between 2 machines and what files will be present in .ssh folder?
+q. How to schedule a shell script in unix machines?
+q. Command to get load average ?
+q. Need to identify ip addresses in log file and count of ip addresses in log file?
+
+q) exit status in shell scripting ?
+- echo $?
+
+ex:
+cat exit-status.sh
+#!/bin/sh
+wget url
+if [ $? -eq 0 ]; then
+echo "file downloaded"
+else
+echo "provide proper link to download"
+fi
+
+q) lets say i have many application properties and that i need use it in my shell script which is hte better way to do the smae.
+
+ex:
+vi config
+name="Mark"
+sur="Brown"
+
+vi application_properties.sh
+source config
+echo "Name=$nam"
+echo "Surname=$sur"
+
+q) shell script should have two options
+   1. -b
+   2. -t
+ex:
+ assuming shell script name as arguments.sh
+./arguments.sh -b dev  dev is a branch
+./arguments.sh -t 12.19 12.19 is a tag
+./arguments.sh -b dev -t 12.19 
+./arguments.sh -t 12.19 -b dev
+
+while
+    [ -n "$1" ]
+do
+    case "$1" in
+    -b)
+        echo "$2 is a branch"
+        shift
+        ;;
+    -t)
+        echo "$2 is a tag"
+        shift
+        ;;
+    *)
+        echo "option $1 not recognized"
+        exit 1
+        ;;
+    esac
+    shift
+done
+
+q) how to create shortcut when your using a long command repeatedly.
+
+ex:
+vi ~/.bashrc
+alias pwf='pwd | rev | cut -d "/" -f 1 | rev
+:wq!
+source ~/.bashrc
+pwf
+
+q) i need to have a shell script whenever i execute the script that should monitor my application log folder, if the folder contains more than 10 files then i should print
+  "folder has more than 10 files" and also delete extra files based on modification date else script should print "folder has less than or equal to 10 files"
+ex:
+#!/bin/sh
+folder_path="/home/deekshithsn1/application_logs"
+cd $folder_path
+count_of_files=$( ls -1 | wc -l )
+if [ $count_of_files -gt 10 ]
+then
+echo "folder has more than 10 files"
+ls -1t | tail -n +11 | xargs rm -f
+else
+echo "folder has less than or eqaul to 10 files"
+fi
+
+q) i want debug my shell script how to do that?
+=>
+givinng -x in shell script file first line
+ex:
+#!/bin/sh -x
+

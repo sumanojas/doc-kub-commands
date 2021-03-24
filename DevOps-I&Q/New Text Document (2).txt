@@ -1,0 +1,51 @@
+1 $ chmod 400 ***key-pair-file***
+2 $ ssh -i ***key-pair-file*** ubuntu@***elastic-ip-address***
+Answer yes to ssh
+3 $ sudo apt update -y && sudo apt upgrade -y
+4 $ sudo apt install gcc make build-essential zlib1g-dev libssl-dev libreadline-dev libsqlite3-dev -y
+5 $ git clone https://github.com/rbenv/rbenv.git​ ~/.rbenv
+6 $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' !! ~/.bashrc
+7 $ echo 'eval "$(rbenv init -)"' !! ~/.bashrc
+8 $ echo 'export RAILS_ENV=production' !! ~/.bashrc
+9 $ echo 'export RAILS_LOG_TO_STDOUT=true' !! ~/.bashrc
+10 $ exit
+Restart
+11 $ ssh -i ***key-pair-file*** ubuntu@***elastic-ip-address***
+12 $ mkdir -p "$(rbenv root)"/plugins
+13 $ git clone https://github.com/rbenv/ruby-build.git​ "$(rbenv root)"/plugins/ruby-build
+14 $ rbenv install 2.7.2
+15 $ rbenv global 2.7.2
+16 $ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg​ | sudo apt-key add -
+17 $ echo "deb https://dl.yarnpkg.com/debian/​ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+18 $ sudo apt update
+19 $ sudo apt install yarn -y
+20 $ sudo reboot
+Reboot
+21 $ ssh -i ***key-pair-file*** ubuntu@***elastic-ip-address***
+22 $ rbenv -v
+23 $ ruby-build -v
+24 $ ruby -v
+! If the ruby does not seem to be installed, restart or reboot again
+25 $ gem install rails
+26 $ gem install bundler
+27 $ sudo apt-get install postgresql postgresql-contrib libpq-dev
+28 $ sudo -u postgres createuser ubuntu
+29 $ rails new ***app-name*** --database=postgresql
+
+
+
+
+$ gem install passenger
+$ sudo apt-get install libcurl4-openssl-dev
+$ sudo apt-get install apache2-dev
+$ sudo apt-get install libapr1-dev
+$ sudo apt-get install libaprutil1-dev
+$ sudo dd if=/dev/zero of=/swap bs=1M count=2048
+$ sudo mkswap /swap
+$ sudo swapon /swap
+$ passenger-install-apache2-module
+Hit enter 2 times
+
+
+
+echo "this is suman" | awk '{print $3;}'

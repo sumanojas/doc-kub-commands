@@ -1,0 +1,293 @@
+WEEK:1
+------
+:)Deployment Models for Cloud Computing:-
+
+-The three cloud computing deployment models are cloud-based, on-premises, and hybrid. 
+
+=>Cloud-based Deployment:-
+-Run all parts of the application in the cloud.
+-Migrate existing applications to the cloud.
+-Design and build new applications in the cloud.
+
+For example, a company might create an application consisting of virtual servers, databases, and networking components that are fully based in the cloud.
+
+=>On-premises Deployment:-
+-Deploy resources by using virtualization and resource management tools.
+-Increase resource utilization by using application management and virtualization technologies.
+
+-For example, you might have applications that run on technology that is fully kept in your on-premises data center.
+ Though this model is much like legacy IT infrastructure, its incorporation of application management and virtualization technologies helps to increase resource utilization.
+
+=>Hybrid Deployment:-
+-Connect cloud-based resources to on-premises infrastructure.
+-Integrate cloud-based resources with legacy IT applications.
+
+-For example, suppose that a company wants to use cloud services that can automate batch data processing and analytics.
+ However, the company has several legacy applications that are more suitable on-premises and will not be migrated to the cloud.
+ With a hybrid deployment, the company would be able to keep the legacy applications on premises while benefiting from the data and analytics services that run in the cloud.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Amazon Elastic Compute Cloud (Amazon EC2)
+-Amazon Elastic Compute Cloud (Amazon EC2) provides secure, resizable compute capacity in the cloud as Amazon EC2 instances. 
+
+-Imagine you are responsible for the architecture of your company's resources and need to support new websites. With traditional on-premises resources, you have to do the following:
+
+ -Spend money upfront to purchase hardware.
+ -Wait for the servers to be delivered to you.
+ -Install the servers in your physical data center.
+ -Make all the necessary configurations.
+
+-By comparison, with an Amazon EC2 instance you can use a virtual server to run applications in the AWS Cloud.
+
+ -You can provision and launch an Amazon EC2 instance within minutes.
+ -You can stop using it when you have finished running a workload.
+ -You pay only for the compute time you use when an instance is running, not when it is stopped or terminated.
+ -You can save costs by paying only for server capacity that you need or want.
+
+:The different instance families in EC2 are general purpose, compute optimized, memory optimized, accelerated computing, and storage optimized.
+
+-General purpose instances provide a good balance of compute, memory and networking resources, and can be used for a variety of diverse workloads like, web service or code repositories.
+ Compute optimized instances are ideal for compute intensive tasks like gaming service, high performance computing, or HPC, and even scientific modeling.
+ Similarly, memory optimized instances are good for memory intensive tasks. Accelerated computing, are good for floating point number calculations, graphics processing,
+ or data pattern matching, as they use hardware accelerators. And finally, storage optimized are good for, can you guess it?
+-Workloads that require high performance for locally stored data.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Scaling Amazon EC2:-
+=>Scalability:
+-Scalability involves beginning with only the resources you need and designing your architecture to automatically respond to changing demand by scaling out or in.
+ As a result, you pay for only the resources you use. You don’t have to worry about a lack of computing capacity to meet your customers’ needs.
+
+-If you wanted the scaling process to happen automatically, which AWS service would you use?
+ The AWS service that provides this functionality for Amazon EC2 instances is Amazon EC2 Auto Scaling.
+
+-Amazon EC2 Auto Scaling enables you to automatically add or remove Amazon EC2 instances in response to changing application demand.
+ By automatically scaling your instances in and out as needed, you are able to maintain a greater sense of application availability.
+
+-Within Amazon EC2 Auto Scaling, you can use two approaches: dynamic scaling and predictive scaling.
+ .Dynamic scaling responds to changing demand. 
+ .Predictive scaling automatically schedules the right number of Amazon EC2 instances based on predicted demand.
+
+-Amazon EC2 Auto Scaling adds instances based on demand and then decommissioned instances when they are no longer needed.
+ This means that every minute of the day you always have the correct number of instances.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Elastic Load Balancer
+-Elastic Load Balancing is the AWS service that automatically distributes incoming application traffic across multiple resources, such as Amazon EC2 instances. 
+
+-A load balancer acts as a single point of contact for all incoming web traffic to your Auto Scaling group.
+ This means that as you add or remove Amazon EC2 instances in response to the amount of incoming traffic, these requests route to the load balancer first.
+ Then, the requests spread across multiple resources that will handle them.For example, if you have multiple Amazon EC2 instances,
+ Elastic Load Balancing distributes the workload across the multiple instances so that no single instance has to carry the bulk of it. 
+
+-Although Elastic Load Balancing and Amazon EC2 Auto Scaling are separate services,
+ they work together to help ensure that applications running in Amazon EC2 can provide high performance and availability. 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Monolithic Applications and Microservices:--
+
+=>Monolithic Applications
+-Applications are made of multiple components. The components communicate with each other to transmit data, fulfill requests, and keep the application running. 
+-Suppose that you have an application with tightly coupled components. These components might include databases, servers, the user interface, business logic, and so on.
+ This type of architecture can be considered a monolithic application. 
+-In this approach to application architecture, if a single component fails, other components fail, and possibly the entire application fails.
+
+=>Microservices
+-To help maintain application availability when a single component fails, you can design your application through a microservices approach.
+-In a microservices approach, application components are loosely coupled.
+ In this case, if a single component fails, the other components continue to work because they are communicating with each other.
+ The loose coupling prevents the entire application from failing. 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Amazon Simple Notification Service (Amazon SNS)
+
+-Amazon Simple Notification Service (Amazon SNS) is a publish/subscribe service. Using Amazon SNS topics, a publisher publishes messages to subscribers.
+ This is similar to the coffee shop; the cashier provides coffee orders to the barista who makes the drinks.
+-In Amazon SNS, subscribers can be web servers, email addresses, AWS Lambda functions, or several other options. 
+
+:)Amazon Simple Queue Service (Amazon SQS)
+-Amazon Simple Queue Service (Amazon SQS) is a message queuing service. 
+
+-Using Amazon SQS, you can send, store, and receive messages between software components, without losing messages or requiring other services to be available.
+ In Amazon SQS, an application sends messages into a queue. A user or service retrieves a message from the queue, processes it, and then deletes it from the queue.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Serverless Computing
+-Earlier in this module, you learned about Amazon EC2, a service that lets you run virtual servers in the cloud.
+ If you have applications that you want to run in Amazon EC2, you must do the following:
+ >Provision instances (virtual servers).
+ >Upload your code.
+ >Continue to manage the instances while your application is running.
+
+-The term “serverless” means that your code runs on servers, but you do not need to provision or manage these servers.
+ With serverless computing, you can focus more on innovating new products and features instead of maintaining servers.
+
+-Another benefit of serverless computing is the flexibility to scale serverless applications automatically.
+ Serverless computing can adjust the applications' capacity by modifying the units of consumptions, such as throughput and memory. 
+
+-An AWS service for serverless computing is AWS Lambda.
+
+:)AWS Lambda
+-AWS Lambda is a service that lets you run code without needing to provision or manage servers. 
+
+-While using AWS Lambda, you pay only for the compute time that you consume. Charges apply only when your code is running.
+ You can also run code for virtually any type of application or backend service, all with zero administration. 
+
+-For example, a simple Lambda function might involve automatically resizing uploaded images to the AWS Cloud.
+ In this case, the function triggers when uploading a new image. 
+
+:)Containers
+-In AWS, you can also build and run containerized applications.
+-Containers provide you with a standard way to package your application's code and dependencies into a single object.
+ You can also use containers for processes and workflows in which there are essential requirements for security, reliability, and scalability.
+
+:)Amazon Elastic Container Service (Amazon ECS)
+-Amazon ECS is a highly scalable, high-performance container management system that enables you to run and scale containerized applications on AWS. 
+-Amazon ECS supports Docker containers. Docker is a software platform that enables you to build, test, and deploy applications quickly.
+ AWS supports the use of open-source Docker Community Edition and subscription-based Docker Enterprise Edition.
+ With Amazon ECS, you can use API calls to launch and stop Docker-enabled applications.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+WEEK:2:-
+--------
+:)Availability Zones
+
+-An Availability Zone is a single data center or a group of data centers within a Region.
+ Availability Zones are located tens of miles apart from each other.
+ This is close enough to have low latency (the time between when content requested and received) between Availability Zones.
+ However, if a disaster occurs in one part of the Region, they are distant enough to reduce the chance that multiple Availability Zones are affected.
+
+:)Edge Locations
+-An edge location is a site that Amazon CloudFront uses to store cached copies of your content closer to your customers for faster delivery.
+
+=>Origin
+-Suppose that your company’s data is stored in Brazil, and you have customers who live in China. To provide content to these customers,
+ you don’t need to move all the content to one of the Chinese Regions.
+=>Edge Location
+-Instead of requiring your customers to get their data from Brazil, you can cache a copy locally at an edge location that is close to your customers in China.
+
+=>Customer
+-When a customer in China requests one of your files, Amazon CloudFront retrieves the file from the cache in the edge location and delivers the file to the customer.
+ The file is delivered to the customer faster because it came from the edge location near China instead of the original source in Brazil.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)AWS Elastic Beanstalk and AWS CloudFormation
+
+=>AWS Elastic Beanstalk
+-With AWS Elastic Beanstalk, you provide code and configuration settings, and Elastic Beanstalk deploys the resources necessary to perform the following tasks:
+
+-Adjust capacity
+-Load balancing
+-Automatic scaling
+-Application health monitoring
+
+=>AWS CloudFormation
+-With AWS CloudFormation, you can treat your infrastructure as code.
+ This means that you can build an environment by writing lines of code instead of using the AWS Management Console to individually provision resources.
+
+-AWS CloudFormation provisions your resources in a safe, repeatable manner,
+ enabling you to frequently build your infrastructure and applications without having to perform manual actions or write custom scripts.
+ It determines the right operations to perform when managing your stack and rolls back changes automatically if it detects errors.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Connectivity to AWS
+=>Amazon Virtual Private Cloud (Amazon VPC)
+-Imagine the millions of customers who use AWS services. Also, imagine the millions of resources that these customers have created, such as Amazon EC2 instances.
+ Without boundaries around all of these resources, network traffic would be able to flow between them unrestricted. 
+
+-A networking service that you can use to establish boundaries around your AWS resources is Amazon Virtual Private Cloud (Amazon VPC).
+
+-Amazon VPC enables you to provision an isolated section of the AWS Cloud.
+ In this isolated section, you can launch resources in a virtual network that you define.
+ Within a virtual private cloud (VPC), you can organize your resources into subnets.
+ A subnet is a section of a VPC that can contain resources such as Amazon EC2 instances.
+
+:)Internet gateway
+-To allow public traffic from the internet to access your VPC, you attach an internet gateway to the VPC.
+
+-An internet gateway is a connection between a VPC and the internet.
+ You can think of an internet gateway as being similar to a doorway that customers use to enter the coffee shop.
+ Without an internet gateway, no one can access the resources within your VPC.
+
+:)Virtual private gateway
+-A virtual private gateway enables you to establish a virtual private network (VPN) connection between your VPC and a private network,
+ such as an on-premises data center or internal corporate network. A virtual private gateway allows traffic into the VPC only if it is coming from an approved network.
+
+:)AWS Direct Connect
+-AWS Direct Connect is a service that enables you to establish a dedicated private connection between your data center and a VPC.
+-The private connection that AWS Direct Connect provides helps you to reduce network costs and increase the amount of bandwidth that can travel through your network.
+
+:)Subnets and Network Access Control Lists
+
+=>Subnets
+-A subnet is a section of a VPC in which you can group resources based on security or operational needs. Subnets can be public or private. 
+-Public subnets contain resources that need to be accessible by the public, such as an online store’s website.
+-Private subnets contain resources that should be accessible only through your private network,
+ such as a database that contains customers’ personal information and order histories. 
+-In a VPC, subnets can communicate with each other.
+ For example, you might have an application that involves Amazon EC2 instances in a public subnet communicating with databases that are located in a private subnet.
+
+:)Network Traffic in a VPC
+-When a customer requests data from an application hosted in the AWS Cloud, this request is sent as a packet. A packet is a unit of data sent over the internet or a network. 
+
+-It enters into a VPC through an internet gateway. Before a packet can enter into a subnet or exit from a subnet, it checks for permissions.
+ These permissions indicate who sent the packet and how the packet is trying to communicate with the resources in a subnet.
+
+-The VPC component that checks packet permissions for subnets is a network access control list (ACL).
+
+:)Network Access Control Lists (ACLs)
+-A network access control list (ACL) is a virtual firewall that controls inbound and outbound traffic at the subnet level.
+-By default, your account’s default network ACL allows all inbound and outbound traffic, but you can modify it by adding your own rules.
+ For custom network ACLs, all inbound and outbound traffic is denied until you add rules to specify which traffic to allow.
+=>Stateless Packet Filtering
+Network ACLs perform stateless packet filtering. They remember nothing and check packets that cross the subnet border each way: inbound and outbound. 
+
+:)Security Groups
+-A security group is a virtual firewall that controls inbound and outbound traffic for an Amazon EC2 instance.
+-By default, a security group denies all inbound traffic and allows all outbound traffic. You can add custom rules to configure which traffic to allow or deny.
+-If you have multiple Amazon EC2 instances within a subnet, you can associate them with the same security group or use different security groups for each instance. 
+=>Stateful Packet Filtering
+-Security groups perform stateful packet filtering. They remember previous decisions made for incoming packets.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:)Domain Name System (DNS)
+-Suppose that AnyCompany has a website hosted in the AWS Cloud. Customers enter the web address into their browser, and they are able to access the website.
+ This happens because of Domain Name System (DNS) resolution. DNS resolution involves a DNS server communicating with a web server.
+
+-For example, suppose that you want to visit AnyCompany’s website. 
+
+1.When you enter the domain name into your browser, this request is sent to a DNS server. 
+2.The DNS server asks the web server for the IP address that corresponds to AnyCompany’s website.
+3.The web server responds by providing the IP address for AnyCompany’s website, 192.0.2.0.
+
+:)Amazon Route 53
+-Amazon Route 53 is a DNS web service. It gives developers and businesses a reliable way to route end users to internet applications hosted in AWS. 
+-Amazon Route 53 connects user requests to infrastructure running in AWS (such as Amazon EC2 instances and load balancers).
+ It can route users to infrastructure outside of AWS.
+-Another feature of Route 53 is the ability to manage the DNS records for domain names.
+ You can register new domain names directly in Route 53. You can also transfer DNS records for existing domain names managed by other domain registrars.
+ This enables you to manage all of your domain names within a single location.
+
+Example: How Amazon Route 53 and Amazon CloudFront deliver content
+-Suppose that AnyCompany’s application is running on several Amazon EC2 instances. These instances are in an Auto Scaling group that attaches to an Application Load Balancer. 
+
+1.A customer requests data from the application by going to AnyCompany’s website. 
+2.Amazon Route 53 uses DNS resolution to identify AnyCompany.com’s corresponding IP address, 192.0.2.0. This information is sent back to the customer. 
+3.The customer’s request is sent to the nearest edge location through Amazon CloudFront. 
+4.Amazon CloudFront connects to the Application Load Balancer, which sends the incoming packet to an Amazon EC2 instance.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+WEEK:3:-
+--------
+
+
+

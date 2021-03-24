@@ -1,0 +1,8 @@
+Strong knowledge of Linux and a good understanding of networks (TCP/IP fundamentals, firewalls, routing).
+Strong knowledge of TCP/IP networking, SMTP, HTTP, load-balancers, highly available network servers
+Excellent written and verbal communication skills, understanding and communicating effectively both inside & outside the organization
+
+=>Additional resource for interview preparationn ?
+https://github.com/mxssl/sre-interview-prep-guide
+codophobia
+powercert animated videos

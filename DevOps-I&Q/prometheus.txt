@@ -1,5 +1,6 @@
 =>what is prometheus ?
-:promethus is a time series database.prometheus is designed to monitor targets.
+:promethus is a time series database.
+ prometheus is designed to monitor targets.
  servers, databases, standalone virtual machines,pretty much everything can be monitored with prometheus.
 :you can also monitor your application's or docker host and kubernetes cluster by using prometheus easily.
 
@@ -11,3 +12,5 @@ when does it fit?
 
 when does it not fit?
 -if you need 100% accuracy, such as for per-request billing, prometheus is not a good choice
+
+
