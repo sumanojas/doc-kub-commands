@@ -17,7 +17,8 @@
    - it fetches all the changes that were made to the remote branch and then merges those changes into your local branch
      git pull = git fetch + git merge
    Git fetch:
-   - git fetch does only half the work of git pull. it just brings the remote chages into your local repo but does not apply them onto your branches. you have to explicity apply those changes
+   - git fetch does only half the work of git pull. it just brings the remote chages into your local repo but does not apply them onto your branches. you have to explicity 
+   apply those changes
 
 4. How to clone specific branch in git?
 
