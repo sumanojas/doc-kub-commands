@@ -19,7 +19,8 @@
 
 4. If you forget Jenkins password, how would you login back?
 =>  -http://abhijitkakade.com/2019/06/how-to-reset-jenkins-admin-users-password/
-
+    -https://www.jenkins.io/doc/tutorials/build-a-multibranch-pipeline-project/
+    
 5. Have you worked on commit based job in jenkins? what settings you need to do in jenkins and github to setup commit based job?
 
 => -webhooks
