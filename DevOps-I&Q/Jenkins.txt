@@ -16,12 +16,13 @@
     -in a multibranch pipeline project, jenkins automatically discovers, manages and executes pipelines for branches which contain a jenkinsfile in source control.
       
      ex:url:-https://blog.knoldus.com/jenkins-multibranch-pipeline/
-
+            -https://www.jenkins.io/doc/tutorials/build-a-multibranch-pipeline-project/
+            -https://devopscube.com/jenkins-multibranch-pipeline-tutorial/
+            -https://dzone.com/articles/implement-ci-for-multibranch-pipeline-in-jenkins
+            
 4. If you forget Jenkins password, how would you login back?
 =>  -http://abhijitkakade.com/2019/06/how-to-reset-jenkins-admin-users-password/
-    -https://www.jenkins.io/doc/tutorials/build-a-multibranch-pipeline-project/
-    -https://devopscube.com/jenkins-multibranch-pipeline-tutorial/
-    
+         
 5. Have you worked on commit based job in jenkins? what settings you need to do in jenkins and github to setup commit based job?
 
 => -webhooks
