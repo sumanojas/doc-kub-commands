@@ -9,6 +9,9 @@
 =>  
 
 3. Why we need multi branch pipeline?
+=>  -The purpose of the multibranch pipeline is to handle all branches in the repository. We make different pipeline for each branch.
+     Suppose you want to perform complete CI/CD pipeline for the master branch and Only CI pipeline for the develop branch.
+     You can do this with the help of multibranch pipeline project.
 =>  -the multibranch pipeline project type enables you to implement different jenkinsfiles for different branches of the same project.
     -in a multibranch pipeline project, jenkins automatically discovers, manages and executes pipelines for branches which contain a jenkinsfile in source control.
 
