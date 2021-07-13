@@ -14,6 +14,8 @@
      You can do this with the help of multibranch pipeline project.
 =>  -the multibranch pipeline project type enables you to implement different jenkinsfiles for different branches of the same project.
     -in a multibranch pipeline project, jenkins automatically discovers, manages and executes pipelines for branches which contain a jenkinsfile in source control.
+      
+     ex:url:-https://blog.knoldus.com/jenkins-multibranch-pipeline/
 
 4. If you forget Jenkins password, how would you login back?
 =>  -http://abhijitkakade.com/2019/06/how-to-reset-jenkins-admin-users-password/
