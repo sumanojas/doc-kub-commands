@@ -76,18 +76,15 @@ parent.reload()
 11. How to set Jenkins build to fail based specific word in console output ?
 =>
 
-12. How to set Jenkins build to fail based specific word in console output ?
+12. What are active and reactive parameters (Dynamic parameterization) in Jenkins ?
 =>
 
-13. What are active and reactive parameters (Dynamic parameterization) in Jenkins ?
+13. How to customize the build number display to something else in Jenkins job page?
 =>
 
-14. How to customize the build number display to something else in Jenkins job page?
+14. What are multi branch pipeline?
 =>
 
-15. What are multi branch pipeline?
-=>
-
-16. What is shared library in Jenkins ?
+15. What is shared library in Jenkins ?
 =>Jenkins Shared library is the concept of having a common pipeline code in the version control system that can be used by any number of pipelines just by referencing it.
   In fact, multiple teams can use the same library for their pipelines. You can compare it with the common programming Library.
