@@ -88,3 +88,7 @@ parent.reload()
 15. What is shared library in Jenkins ?
 =>Jenkins Shared library is the concept of having a common pipeline code in the version control system that can be used by any number of pipelines just by referencing it.
   In fact, multiple teams can use the same library for their pipelines. You can compare it with the common programming Library.
+
+16. what are the stages in jenkins ?
+=> Stage. A stage block defines a conceptually distinct subset of tasks performed through the entire Pipeline (e.g. "Build", "Test" and "Deploy" stages),
+   which is used by many plugins to visualize or present Jenkins Pipeline status/progress.
