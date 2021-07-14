@@ -27,7 +27,7 @@
 
 => -webhooks
 
-6. you want to create 50 freestyle jobs with same configurations, but only change is job name. how would you achieve teh same?
+6. you want to create 50 freestyle jobs with same configurations, but only change is job name. how would you achieve the same?
 
 => -jenkins-->manage jenkins-->script console
 import hudson.plugins.git.*;
