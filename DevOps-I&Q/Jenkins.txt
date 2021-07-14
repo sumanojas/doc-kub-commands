@@ -70,7 +70,8 @@ parent.reload()
 -Builds can be triggered sequentially after completion of other builds.
 -Can be scheduled to run at a specified time using the CRON jobs
 -Manual Build Requests.
-=>"Poll SCM" polls the SCM periodically for checking if any changes/ new commits were made and shall build the project if any new commits were pushed since the last build, whereas the "build"  shall build the project periodically irrespective to whether or not any changes were made.
+=>"Poll SCM" polls the SCM periodically for checking if any changes/ new commits were made and shall build the project if any new commits were pushed since the last build,
+   whereas the "build"  shall build the project periodically irrespective to whether or not any changes were made.
 
 11. How to set Jenkins build to fail based specific word in console output ?
 =>
