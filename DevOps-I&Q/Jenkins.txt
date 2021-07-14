@@ -89,4 +89,5 @@ parent.reload()
 =>
 
 16. What is shared library in Jenkins ?
-=>
+=>Jenkins Shared library is the concept of having a common pipeline code in the version control system that can be used by any number of pipelines just by referencing it.
+  In fact, multiple teams can use the same library for their pipelines. You can compare it with the common programming Library.
