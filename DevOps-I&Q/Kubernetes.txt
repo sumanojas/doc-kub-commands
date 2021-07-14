@@ -57,7 +57,8 @@ LoadBalancer -it uses cloud providers load balancer. nodeport and clusterIP serv
    
 9. What is the link between pod and service?
 
-=> 
+=> For example, pods are "tagged" with labels, and then services use label selectors to identify the pods they proxy to.
+   This makes it possible for services to reference groups of pods, even treating pods with potentially different containers as related entities.
 
 10. List objects you know in kubernetes?Give a brief about each object?
 =>  deployments, pods,replica sets,services,ingress controller,network policies, pod security policies,cron jobs,stateful sets,deamon sets.
@@ -141,3 +142,7 @@ A.
   So basically, it adds security to a Kubernetes cluster. RBAC in Kubernetes is the way that you restrict who can access what within the cluster.
 
 27.what is the use of pv and pvc ?
+
+=>1.A PersistentVolume (PV) is a piece of storage in the cluster or central storage let's say 100GB.
+  2.A PersistentVolumeClaim (PVC) is a request for storage by a user for the application to use 10GB.
+In real life scenario, PV is whole cake and PVC is piece of cake (But you can have a whole cake if there are no other people to eat (just like if there are no other application to use you can use whole PV )).
