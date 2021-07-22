@@ -136,7 +136,16 @@ A:Elastic Load Balancing supports three types of load balancers.
 
 => No, it won't take new machine it takes average of all the machine in that particular group
 
-25. Services used AWS and tasks performed in AWS
+25. vpc types
+
+=> 4 types
+  -vpc with a sigle public subnet
+  -vpc with public and private subnet(NAT)
+  -vpc with public and private subnet and AWS site to site vpn access
+  -vpc with only private subnet and AWS site to site vpn access
+  
+  
+  
 
 
 
