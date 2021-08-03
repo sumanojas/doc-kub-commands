@@ -143,7 +143,56 @@ A:Elastic Load Balancing supports three types of load balancers.
   -vpc with public and private subnet(NAT)
   -vpc with public and private subnet and AWS site to site vpn access
   -vpc with only private subnet and AWS site to site vpn access
+ 
+ =>LOAD BALANCER:-
   
+>what is Elastic Load Balancer(ELB) ?
+-the laod balancer acts as a single point of contact for clients and distributes incoming application traffic across multiple EC2 instance.
+-it can handle the varying load of your application traffic in a single availability zone or across multiple availability zones,
+ which increases the availability of your application
+-you can add and remove instances from your load balancer as your needs change, without distrupting the overall flow of requests to your application.
+
+Types in ELB
+-elastic load balancing offers 3 types of load balancers that all feature the high availability,
+ automatic scaling and security to make your application fault tolerant.
+1. classic load balancer
+2. application load balancer
+3. network load balancer
+
+classic load balancer:-
+-classic load balancer provides basic load balancing across multiple instances in multiple availability zones.
+-round robin routing algorithm for TCP listeners and the least outstanding requests routing algorithm for HTTP and HTTPS listeners
+-a classic load balancer makes routing decissions at either the transport layer(TCP/SSL) or the application layer(HTTP/HTTPS), 
+ and supports either EC2 classic or a VPC.
+
+application load balancer:-
+-application load balancer is best suited for load balancing of HTTP and HTTPS traffic
+-layer 7 lb
+-appication load balancer simplifies and improves the security of your application, by ensuring that the latest SSL/TLS for encrypted connections
+ (also known as SSL offload).
+-content based routing
+
+components
+1.listeners
+2.targets groups
+
+network load balancer:-
+-choose a network load balancer when you need ultra-high performance and static IP addresses for your application
+-network load balancer is best suited for load balancing of TCP traffic where extreme performance is required.
+-network load balancer is capable of handling millions of requests per second while maintaining ultra-low latencies.
+-you may also add one elastic IP per availability zone if you wish to have specific addresses for your load balancer.
+
+Routing Algorithm:-
+-classic load balancer
+ -round robin routing algorithm for TCP listeners
+ -least outstanding requests routing algorithm for HTTP and HTTPS listeners.
+
+-application load balancer:-
+ -round robing routing algorithm
+
+-network load balancer
+ -flow hash algorithm
+
   
   
 
